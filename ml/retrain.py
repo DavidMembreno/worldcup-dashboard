@@ -2,16 +2,17 @@ import pandas as pd
 import numpy as np
 import json
 import os
+import random
 import urllib.request
 from datetime import datetime
 from collections import Counter
 from xgboost import XGBClassifier
 
 # ── paths ────────────────────────────────────────────────────────────────────
-BASE  = os.path.dirname(__file__)
-HIST  = os.path.join(BASE, 'historical_results.csv')
-STATS = os.path.join(BASE, '..', 'src', 'ml', 'match_stats.json')
-OUT   = os.path.join(BASE, '..', 'src', 'ml', 'predictions.json')
+BASE     = os.path.dirname(__file__)
+HIST     = os.path.join(BASE, 'historical_results.csv')
+STATS    = os.path.join(BASE, '..', 'src', 'ml', 'match_stats.json')
+OUT      = os.path.join(BASE, '..', 'src', 'ml', 'predictions.json')
 HIST_OUT = os.path.join(BASE, '..', 'src', 'ml', 'prediction_history.json')
 
 WC26_TEAMS = [
@@ -60,6 +61,21 @@ FIFA_RANKINGS = {
     'Paraguay': 43, 'Panama': 44, 'Bolivia': 45, 'Jordan': 46,
     'Cape Verde': 47, 'Haiti': 48, 'Uzbekistan': 49, 'DR Congo': 50,
     'Curacao': 86, 'Congo DR': 50,
+}
+
+GROUPS = {
+    'A': ['Mexico','South Korea','Czech Republic','South Africa'],
+    'B': ['Canada','Bosnia and Herzegovina','Qatar','Switzerland'],
+    'C': ['Brazil','Morocco','Haiti','Scotland'],
+    'D': ['United States','Australia','Turkey','Paraguay'],
+    'E': ['Germany','Ivory Coast','Ecuador','Curacao'],
+    'F': ['Netherlands','Japan','Sweden','Tunisia'],
+    'G': ['Belgium','New Zealand','Iran','Egypt'],
+    'H': ['Spain','Uruguay','Saudi Arabia','Cape Verde'],
+    'I': ['France','Senegal','Iraq','Norway'],
+    'J': ['Argentina','Algeria','Austria','Jordan'],
+    'K': ['Portugal','DR Congo','England','Croatia'],
+    'L': ['Ghana','Panama','Uzbekistan','Colombia'],
 }
 
 # ── 1. ELO ───────────────────────────────────────────────────────────────────
@@ -178,7 +194,67 @@ def elo_match_probs(home, away):
     draw_prob = 0.28
     return exp_h*(1-draw_prob), draw_prob, (1-exp_h)*(1-draw_prob)
 
-# ── 3. ENSEMBLE ───────────────────────────────────────────────────────────────
+# ── 3. MONTE CARLO ────────────────────────────────────────────────────────────
+print('\nRunning Monte Carlo (10,000 sims)...')
+
+def run_monte_carlo(sims=10000):
+    trophy_wins = {t: 0 for t in WC26_TEAMS}
+    elimination_round = {t: [] for t in WC26_TEAMS}
+
+    def sim_match(home, away):
+        hw, dp, aw = elo_match_probs(home, away)
+        r = random.random()
+        if r < hw: return home
+        elif r < hw + dp: return random.choice([home, away])
+        else: return away
+
+    def get_group_qualifiers(teams):
+        ranked = sorted(teams, key=lambda t: -elo.get(t, 1500))
+        return ranked[:2], ranked[2]
+
+    for _ in range(sims):
+        qualifiers = []
+        third_place = []
+
+        for g, teams in GROUPS.items():
+            top2, third = get_group_qualifiers(teams)
+            qualifiers.extend(top2)
+            third_place.append(third)
+
+        best_thirds = sorted(third_place, key=lambda t: -elo.get(t, 1500))[:8]
+        bracket = qualifiers + best_thirds
+        random.shuffle(bracket)
+
+        round_name = 'R32'
+        while len(bracket) > 1:
+            next_round = []
+            for i in range(0, len(bracket), 2):
+                if i + 1 < len(bracket):
+                    winner = sim_match(bracket[i], bracket[i+1])
+                    loser = bracket[i] if winner == bracket[i+1] else bracket[i+1]
+                    elimination_round[loser].append(round_name)
+                else:
+                    winner = bracket[i]
+                next_round.append(winner)
+            bracket = next_round
+            round_name = {'R32':'R16','R16':'QF','QF':'SF','SF':'Final','Final':'Champion'}.get(round_name, round_name)
+
+        if bracket:
+            trophy_wins[bracket[0]] += 1
+
+    mc_trophy = {t: round(trophy_wins[t] / sims, 4) for t in WC26_TEAMS}
+    avg_elim = {t: Counter(elimination_round[t]).most_common(1)[0][0]
+                if elimination_round[t] else 'Group Stage'
+                for t in WC26_TEAMS}
+
+    return mc_trophy, avg_elim
+
+mc_probs, mc_elim = run_monte_carlo(10000)
+print('  Top 5 Monte Carlo:')
+for t, p in sorted(mc_probs.items(), key=lambda x: -x[1])[:5]:
+    print(f'    {t}: {p*100:.1f}%')
+
+# ── 4. ENSEMBLE ───────────────────────────────────────────────────────────────
 print('\nBuilding ensemble...')
 
 finished_count = len([s for s in match_stats.values()
@@ -193,13 +269,11 @@ else:
 
 print(f'  Finished matches: {finished_count} → weights: {W}')
 
-# Signal 1: Elo
 elo_raw = {t: expected(elo.get(t,1500), np.mean([elo.get(x,1500) for x in WC26_TEAMS]))
            for t in WC26_TEAMS}
 elo_total = sum(elo_raw.values())
 elo_probs = {t: v/elo_total for t,v in elo_raw.items()}
 
-# Signal 2: XGBoost
 xgb_scores = {}
 for t in WC26_TEAMS:
     team_stats = [s for s in match_stats.values()
@@ -229,7 +303,6 @@ for t in WC26_TEAMS:
 xgb_total = sum(xgb_scores.values())
 xgb_probs = {t: v/xgb_total for t,v in xgb_scores.items()}
 
-# Signal 3: Form — opponent-weighted points + goal diff
 form_scores = {}
 for t in WC26_TEAMS:
     pts, gf, ga, played = 0, 0, 0, 0
@@ -263,7 +336,6 @@ for t in WC26_TEAMS:
 form_total = sum(max(v, 0.01) for v in form_scores.values())
 form_probs = {t: max(form_scores[t],0.01)/form_total for t in WC26_TEAMS}
 
-# combine
 ensemble = {t: W['elo']*elo_probs[t] + W['xgb']*xgb_probs[t] + W['form']*form_probs[t]
             for t in WC26_TEAMS}
 total = sum(ensemble.values())
@@ -274,7 +346,7 @@ for t,p in sorted(ensemble.items(), key=lambda x:-x[1])[:5]:
     print(f'  {t}: elo={elo_probs[t]*100:.1f}% | xgb={xgb_probs[t]*100:.1f}% | '
           f'form={form_probs[t]*100:.1f}% | ensemble={p*100:.1f}%')
 
-# ── 4. UPCOMING MATCH PREDICTIONS ────────────────────────────────────────────
+# ── 5. UPCOMING MATCH PREDICTIONS ────────────────────────────────────────────
 print('\nPredicting upcoming matches...')
 BASE_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world'
 upcoming = []
@@ -337,12 +409,17 @@ try:
 except Exception as e:
     print(f'  Could not fetch upcoming: {e}')
 
-# ── 5. WRITE PREDICTIONS ──────────────────────────────────────────────────────
+# ── 6. WRITE PREDICTIONS ──────────────────────────────────────────────────────
 finalist_probs = sorted(
     [{'team':t,'probability':round(p,4)} for t,p in ensemble.items()],
     key=lambda x:-x['probability']
 )
 winner = finalist_probs[0]
+
+mc_ranked = sorted(
+    [{'team':t,'probability':mc_probs[t],'likely_exit':mc_elim[t]} for t in WC26_TEAMS],
+    key=lambda x:-x['probability']
+)
 
 output = {
     'generated_at': pd.Timestamp.now().isoformat(),
@@ -355,6 +432,13 @@ output = {
     'elo_ratings': {t: round(elo.get(t,1500),1) for t in WC26_TEAMS},
     'form_scores': {t: round(form_probs[t]*100,2) for t in WC26_TEAMS},
     'xgb_scores': {t: round(xgb_probs[t]*100,2) for t in WC26_TEAMS},
+    'monte_carlo': {
+        'probabilities': mc_probs,
+        'likely_exit': mc_elim,
+        'simulations': 10000,
+        'ranked': mc_ranked,
+        'winner': mc_ranked[0],
+    }
 }
 
 class NpEncoder(json.JSONEncoder):
@@ -366,19 +450,20 @@ class NpEncoder(json.JSONEncoder):
 with open(OUT,'w') as f:
     json.dump(output, f, indent=2, cls=NpEncoder)
 
-# ── 6. APPEND TO HISTORY ──────────────────────────────────────────────────────
+# ── 7. APPEND TO HISTORY ──────────────────────────────────────────────────────
 history = []
 if os.path.exists(HIST_OUT):
     with open(HIST_OUT) as f:
         history = json.load(f)
 
 today_str = datetime.utcnow().strftime('%Y-%m-%d')
-# only append once per day
 if not history or history[-1].get('date') != today_str:
     history.append({
         'date': today_str,
         'predicted_winner': winner['team'],
         'probability': winner['probability'],
+        'mc_winner': mc_ranked[0]['team'],
+        'mc_probability': mc_ranked[0]['probability'],
         'top5': finalist_probs[:5],
         'matches_used': finished_count,
         'weights': W,
@@ -387,5 +472,6 @@ if not history or history[-1].get('date') != today_str:
         json.dump(history, f, indent=2, cls=NpEncoder)
     print(f'History updated: {len(history)} entries')
 
-print(f'\nDone. Predicted winner: {winner["team"]} ({winner["probability"]*100:.1f}%)')
+print(f'\nDone. Ensemble winner: {winner["team"]} ({winner["probability"]*100:.1f}%)')
+print(f'Monte Carlo winner: {mc_ranked[0]["team"]} ({mc_ranked[0]["probability"]*100:.1f}%)')
 print(f'Output → {OUT}')

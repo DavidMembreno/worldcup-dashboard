@@ -32,7 +32,7 @@ export default function Home() {
     >
       <div className="min-h-screen bg-black/60 p-6">
 
-        {/* Projected Winner Banner — clickable → history page */}
+        {/* Projected Winner Banner */}
         <div className="flex justify-center mb-4 mt-6">
           <div
             onClick={() => navigate('/history')}
@@ -48,10 +48,27 @@ export default function Home() {
           </div>
         </div>
 
-        {/* subtle hint */}
-        <p className="text-center text-gray-500 text-xs mb-8">
-          Click to see prediction history
-        </p>
+        {/* model navigation buttons */}
+        <div className="flex justify-center gap-3 mb-8">
+          <button
+            onClick={() => navigate('/history')}
+            className="px-4 py-2 rounded-full text-xs border border-white/20 text-gray-300 hover:border-white/40 hover:text-white transition"
+          >
+            Ensemble History
+          </button>
+          <button
+            onClick={() => navigate('/montecarlo')}
+            className="px-4 py-2 rounded-full text-xs border border-yellow-400/30 text-yellow-300 hover:border-yellow-400/60 transition"
+          >
+            Monte Carlo Simulation
+          </button>
+          <button
+            onClick={() => navigate('/model')}
+            className="px-4 py-2 rounded-full text-xs border border-blue-400/30 text-blue-300 hover:border-blue-400/60 transition"
+          >
+            Model Logic
+          </button>
+        </div>
 
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-4 mb-10 max-w-2xl mx-auto">

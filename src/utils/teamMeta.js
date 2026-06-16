@@ -1,0 +1,58 @@
+export const TEAM_META = {
+  'Mexico':               { espn: 'mex', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/mex.png' },
+  'South Africa':         { espn: 'rsa', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/rsa.png' },
+  'South Korea':          { espn: 'kor', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/kor.png' },
+  'Czechia':              { espn: 'cze', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/cze.png' },
+  'Canada':               { espn: 'can', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/can.png' },
+  'Bosnia-Herzegovina':   { espn: 'bih', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/bih.png' },
+  'United States':        { espn: 'usa', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/usa.png' },
+  'Paraguay':             { espn: 'par', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/par.png' },
+  'Qatar':                { espn: 'qat', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/qat.png' },
+  'Switzerland':          { espn: 'sui', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/sui.png' },
+  'Brazil':               { espn: 'bra', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/bra.png' },
+  'Morocco':              { espn: 'mar', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/mar.png' },
+  'Haiti':                { espn: 'hai', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/hai.png' },
+  'Scotland':             { espn: 'sco', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/sco.png' },
+  'Australia':            { espn: 'aus', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/aus.png' },
+  'Turkey':               { espn: 'tur', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/tur.png' },
+  'Germany':              { espn: 'ger', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/ger.png' },
+  'Curacao':              { espn: 'cur', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/cur.png' },
+  'Netherlands':          { espn: 'ned', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/ned.png' },
+  'Japan':                { espn: 'jpn', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/jpn.png' },
+  'Ivory Coast':          { espn: 'civ', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/civ.png' },
+  'Ecuador':              { espn: 'ecu', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/ecu.png' },
+  'Sweden':               { espn: 'swe', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/swe.png' },
+  'Tunisia':              { espn: 'tun', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/tun.png' },
+  'Spain':                { espn: 'esp', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/esp.png' },
+  'Cape Verde':           { espn: 'cpv', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/cpv.png' },
+  'Belgium':              { espn: 'bel', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/bel.png' },
+  'Egypt':                { espn: 'egy', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/egy.png' },
+  'Uruguay':              { espn: 'uru', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/uru.png' },
+  'Saudi Arabia':         { espn: 'ksa', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/ksa.png' },
+  'Iran':                 { espn: 'irn', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/irn.png' },
+  'New Zealand':          { espn: 'nzl', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/nzl.png' },
+  'France':               { espn: 'fra', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/fra.png' },
+  'Senegal':              { espn: 'sen', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/sen.png' },
+  'Iraq':                 { espn: 'irq', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/irq.png' },
+  'Norway':               { espn: 'nor', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/nor.png' },
+  'Argentina':            { espn: 'arg', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/arg.png' },
+  'Algeria':              { espn: 'alg', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/alg.png' },
+  'Austria':              { espn: 'aut', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/aut.png' },
+  'Jordan':               { espn: 'jor', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/jor.png' },
+  'Portugal':             { espn: 'por', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/por.png' },
+  'Congo DR':             { espn: 'cod', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/cod.png' },
+  'England':              { espn: 'eng', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/eng.png' },
+  'Croatia':              { espn: 'cro', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/cro.png' },
+  'Ghana':                { espn: 'gha', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/gha.png' },
+  'Panama':               { espn: 'pan', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/pan.png' },
+  'Uzbekistan':           { espn: 'uzb', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/uzb.png' },
+  'Colombia':             { espn: 'col', flag: 'https://a.espncdn.com/i/teamlogos/countries/500/col.png' },
+}
+
+export function getFlag(teamName) {
+  return TEAM_META[teamName]?.flag || null
+}
+
+export function getEspnCode(teamName) {
+  return TEAM_META[teamName]?.espn || null
+}

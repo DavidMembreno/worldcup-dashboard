@@ -1,0 +1,45 @@
+name: Daily Model Update
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # 5am UTC = midnight PST
+  workflow_dispatch:       # also lets you trigger manually from GitHub UI
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download historical data
+        run: |
+          python -c "
+          import urllib.request
+          urllib.request.urlretrieve(
+            'https://raw.githubusercontent.com/martj42/international_results/master/results.csv',
+            'ml/historical_results.csv'
+          )
+          print('Downloaded')
+          "
+
+      - name: Scrape match stats
+        run: python ml/scrape_stats.py
+
+      - name: Retrain model
+        run: python ml/retrain.py
+
+      - name: Commit and push updates
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add src/ml/predictions.json src/ml/match_stats.json
+          git diff --staged --quiet || git commit -m "auto update $(date +%Y-%m-%d)"
+          git push

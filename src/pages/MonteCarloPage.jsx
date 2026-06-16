@@ -85,10 +85,11 @@ export default function MonteCarloPage() {
             <div className="bg-white/5 rounded-xl p-4">
               <p className="text-yellow-400 font-bold mb-1">Monte Carlo</p>
               <p className="text-gray-300 text-xs leading-relaxed">
-                Simulates the full bracket 10,000 times using only Elo ratings.
-                No current form, no match stats — purely historical team strength.
-                Morocco leads because they have the highest 2025-26 Elo among WC26 teams.
-              </p>
+  Simulates the full bracket 10,000 times using Elo ratings updated with every
+  finished WC26 match. No possession or pass stats — just team strength based on
+  results. Morocco leads because they have the highest Elo among WC26 teams after
+  2025-26 competitive matches including this tournament.
+</p>
             </div>
           </div>
         </div>

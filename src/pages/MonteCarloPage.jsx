@@ -45,7 +45,7 @@ export default function MonteCarloPage() {
           {sims.toLocaleString()} tournament simulations using Elo ratings
         </p>
         <p className="text-gray-500 text-center text-xs mb-8 max-w-xl mx-auto">
-          Each simulation runs the full tournament bracket — group stage, R32, R16, QF, SF, Final.
+          Each simulation runs the full tournament bracket - group stage, R32, R16, QF, SF, Final.
           Win probability per match is derived from each team's Elo rating.
           The percentage shows how often each team won across all simulations.
         </p>
@@ -86,7 +86,7 @@ export default function MonteCarloPage() {
               <p className="text-yellow-400 font-bold mb-1">Monte Carlo</p>
               <p className="text-gray-300 text-xs leading-relaxed">
   Simulates the full bracket 10,000 times using Elo ratings updated with every
-  finished WC26 match. No possession or pass stats — just team strength based on
+  finished WC26 match. No possession or pass stats - just team strength based on
   results. Morocco leads because they have the highest Elo among WC26 teams after
   2025-26 competitive matches including this tournament.
 </p>

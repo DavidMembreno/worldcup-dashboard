@@ -1,0 +1,35 @@
+[
+  {
+    "date": "2026-06-16",
+    "predicted_winner": "France",
+    "probability": 0.0543,
+    "top5": [
+      {
+        "team": "France",
+        "probability": 0.0543
+      },
+      {
+        "team": "Sweden",
+        "probability": 0.0478
+      },
+      {
+        "team": "Australia",
+        "probability": 0.0451
+      },
+      {
+        "team": "Germany",
+        "probability": 0.0443
+      },
+      {
+        "team": "Ivory Coast",
+        "probability": 0.0434
+      }
+    ],
+    "matches_used": 17,
+    "weights": {
+      "elo": 0.25,
+      "xgb": 0.25,
+      "form": 0.5
+    }
+  }
+]

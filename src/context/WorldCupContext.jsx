@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, useEffect } from 'react'
 import { getAllFixtures } from '../api/espn'
 import predictionsData from '../ml/predictions.json'
+import historyData from '../ml/prediction_history.json'
 
 const WorldCupContext = createContext(null)
 
@@ -10,7 +11,8 @@ const initialState = {
   predictions: predictionsData,
   loading: true,
   error: null,
-  viewMode: 'horizontal'
+  viewMode: 'horizontal',
+  predictionHistory: historyData,
 }
 
 function reducer(state, action) {

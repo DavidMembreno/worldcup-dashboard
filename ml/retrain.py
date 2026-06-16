@@ -3,7 +3,6 @@ import numpy as np
 import json
 import os
 import urllib.request
-import random
 from datetime import datetime
 from collections import Counter
 from xgboost import XGBClassifier
@@ -13,6 +12,7 @@ BASE  = os.path.dirname(__file__)
 HIST  = os.path.join(BASE, 'historical_results.csv')
 STATS = os.path.join(BASE, '..', 'src', 'ml', 'match_stats.json')
 OUT   = os.path.join(BASE, '..', 'src', 'ml', 'predictions.json')
+HIST_OUT = os.path.join(BASE, '..', 'src', 'ml', 'prediction_history.json')
 
 WC26_TEAMS = [
     'Mexico','South Africa','South Korea','Czech Republic','Canada',
@@ -42,6 +42,24 @@ ESPN_FINISHED = {
     '760426': ('Belgium','Egypt'),
     '760429': ('Uruguay','Saudi Arabia'),
     '760427': ('Iran','New Zealand'),
+    '760432': ('France','Senegal'),
+}
+
+FIFA_RANKINGS = {
+    'Argentina': 1, 'France': 2, 'England': 3, 'Brazil': 4,
+    'Portugal': 5, 'Spain': 6, 'Netherlands': 7, 'Germany': 8,
+    'Belgium': 9, 'Uruguay': 10, 'Colombia': 11, 'Morocco': 12,
+    'Japan': 13, 'United States': 14, 'Mexico': 15, 'Croatia': 16,
+    'Senegal': 17, 'Iran': 18, 'South Korea': 19, 'Denmark': 20,
+    'Austria': 21, 'Sweden': 22, 'Norway': 23, 'Switzerland': 24,
+    'Australia': 25, 'Turkey': 26, 'Ecuador': 27, 'Tunisia': 28,
+    'Egypt': 29, 'Algeria': 30, 'Scotland': 31, 'Ukraine': 32,
+    'Canada': 33, 'Saudi Arabia': 34, 'Qatar': 35, 'Iraq': 36,
+    'Ivory Coast': 37, 'Czech Republic': 38, 'New Zealand': 39,
+    'South Africa': 40, 'Ghana': 41, 'Bosnia and Herzegovina': 42,
+    'Paraguay': 43, 'Panama': 44, 'Bolivia': 45, 'Jordan': 46,
+    'Cape Verde': 47, 'Haiti': 48, 'Uzbekistan': 49, 'DR Congo': 50,
+    'Curacao': 86, 'Congo DR': 50,
 }
 
 # ── 1. ELO ───────────────────────────────────────────────────────────────────
@@ -56,7 +74,6 @@ def update_elo(ra, rb, result, k=32):
     sa, sb = (1,0) if result=='home' else (0,1) if result=='away' else (0.5,0.5)
     return ra + k*(sa-ea), rb + k*(sb-eb)
 
-# load 2025-2026 only
 df = pd.read_csv(HIST)
 df = df.dropna(subset=['home_score','away_score'])
 df['date'] = pd.to_datetime(df['date'])
@@ -71,7 +88,6 @@ for _, row in df.iterrows():
              'away' if row['home_score'] < row['away_score'] else 'draw'
     elo[h], elo[a] = update_elo(elo[h], elo[a], result, k=40)
 
-# update with WC26 results — higher K since these are the most important matches
 with open(STATS) as f:
     match_stats = json.load(f)
 
@@ -95,7 +111,6 @@ print('\nTraining XGBoost...')
 
 rows = []
 
-# historical rows from 2025-2026
 for _, row in df.iterrows():
     h, a = row['home_team'], row['away_team']
     hs, as_ = row['home_score'], row['away_score']
@@ -110,7 +125,6 @@ for _, row in df.iterrows():
         'result': result
     })
 
-# WC26 rows with rich stats — these get 5x weight by duplicating
 for espn_id, stat in match_stats.items():
     if stat.get('status') != 'STATUS_FULL_TIME': continue
     home = stat.get('home')
@@ -128,7 +142,6 @@ for espn_id, stat in match_stats.items():
         'pass_pct_diff': float(stat.get('home_pass_pct') or 0.8) - float(stat.get('away_pass_pct') or 0.8),
         'result': result
     }
-    # duplicate WC26 rows 5x so they carry more weight in training
     for _ in range(5):
         rows.append(row)
 
@@ -139,7 +152,7 @@ y = feat_df['result']
 xgb = XGBClassifier(n_estimators=100, max_depth=4, learning_rate=0.1,
                     eval_metric='mlogloss', random_state=42, verbosity=0)
 xgb.fit(X, y)
-print(f'  XGBoost trained on {len(feat_df)} rows ({len(match_stats)} WC26 matches × 5 weight)')
+print(f'  XGBoost trained on {len(feat_df)} rows ({len(match_stats)} WC26 matches x 5 weight)')
 
 def xgb_predict(home, away, h_poss=50, a_poss=50, h_shots=3, a_shots=3, h_pass=0.8, a_pass=0.8):
     feats = pd.DataFrame([{
@@ -171,8 +184,6 @@ print('\nBuilding ensemble...')
 finished_count = len([s for s in match_stats.values()
                       if s.get('status') == 'STATUS_FULL_TIME'])
 
-# form always 50%, elo and xgb split the rest
-# xgb earns more as tournament data grows
 if finished_count < 24:
     W = {'elo': 0.25, 'xgb': 0.25, 'form': 0.50}
 elif finished_count < 48:
@@ -188,7 +199,7 @@ elo_raw = {t: expected(elo.get(t,1500), np.mean([elo.get(x,1500) for x in WC26_T
 elo_total = sum(elo_raw.values())
 elo_probs = {t: v/elo_total for t,v in elo_raw.items()}
 
-# Signal 2: XGBoost — average win probability across this team's WC26 matches
+# Signal 2: XGBoost
 xgb_scores = {}
 for t in WC26_TEAMS:
     team_stats = [s for s in match_stats.values()
@@ -201,12 +212,12 @@ for t in WC26_TEAMS:
     for s in team_stats:
         is_home = s.get('home') == t
         opp = s.get('away') if is_home else s.get('home')
-        hp   = float(s.get('home_possession') or 50)
-        ap   = float(s.get('away_possession') or 50)
-        hsh  = float(s.get('home_shots_on_target') or 3)
-        ash  = float(s.get('away_shots_on_target') or 3)
-        hpp  = float(s.get('home_pass_pct') or 0.8)
-        app  = float(s.get('away_pass_pct') or 0.8)
+        hp  = float(s.get('home_possession') or 50)
+        ap  = float(s.get('away_possession') or 50)
+        hsh = float(s.get('home_shots_on_target') or 3)
+        ash = float(s.get('away_shots_on_target') or 3)
+        hpp = float(s.get('home_pass_pct') or 0.8)
+        app = float(s.get('away_pass_pct') or 0.8)
         if not is_home:
             hp,ap = ap,hp
             hsh,ash = ash,hsh
@@ -218,7 +229,7 @@ for t in WC26_TEAMS:
 xgb_total = sum(xgb_scores.values())
 xgb_probs = {t: v/xgb_total for t,v in xgb_scores.items()}
 
-# Signal 3: Current WC26 form — points per game + goal diff, ZERO historical data
+# Signal 3: Form — opponent-weighted points + goal diff
 form_scores = {}
 for t in WC26_TEAMS:
     pts, gf, ga, played = 0, 0, 0, 0
@@ -227,13 +238,21 @@ for t in WC26_TEAMS:
         if s.get('home') == t:
             hg = s.get('home_score') or 0
             ag = s.get('away_score') or 0
+            opp = s.get('away')
+            opp_rank = FIFA_RANKINGS.get(opp, 50)
+            opp_weight = max(0.5, (51 - opp_rank) / 25)
             gf += hg; ga += ag; played += 1
-            pts += 3 if hg > ag else 1 if hg == ag else 0
+            base_pts = 3 if hg > ag else 1 if hg == ag else 0
+            pts += base_pts * opp_weight
         elif s.get('away') == t:
             hg = s.get('home_score') or 0
             ag = s.get('away_score') or 0
+            opp = s.get('home')
+            opp_rank = FIFA_RANKINGS.get(opp, 50)
+            opp_weight = max(0.5, (51 - opp_rank) / 25)
             gf += ag; ga += hg; played += 1
-            pts += 3 if ag > hg else 1 if ag == hg else 0
+            base_pts = 3 if ag > hg else 1 if ag == hg else 0
+            pts += base_pts * opp_weight
     if played == 0:
         form_scores[t] = 1.0
     else:
@@ -280,7 +299,6 @@ try:
         xgb_p = xgb_predict(home, away)
         elo_p  = elo_match_probs(home, away)
 
-        # ensemble per match: same weights
         hw = W['elo']*elo_p[0] + W['xgb']*xgb_p['home'] + W['form']*elo_p[0]
         dw = W['elo']*elo_p[1] + W['xgb']*xgb_p['draw'] + W['form']*elo_p[1]
         aw = W['elo']*elo_p[2] + W['xgb']*xgb_p['away'] + W['form']*elo_p[2]
@@ -313,13 +331,13 @@ try:
             'confidence': confidence,
             'agreement': f'{agreement}/2'
         })
-        print(f'  {home} vs {away}: {consensus_team} ({confidence}) — '
+        print(f'  {home} vs {away}: {consensus_team} ({confidence}) '
               f'{hw*100:.0f}% / {dw*100:.0f}% / {aw*100:.0f}%')
 
 except Exception as e:
     print(f'  Could not fetch upcoming: {e}')
 
-# ── 5. WRITE ──────────────────────────────────────────────────────────────────
+# ── 5. WRITE PREDICTIONS ──────────────────────────────────────────────────────
 finalist_probs = sorted(
     [{'team':t,'probability':round(p,4)} for t,p in ensemble.items()],
     key=lambda x:-x['probability']
@@ -347,6 +365,27 @@ class NpEncoder(json.JSONEncoder):
 
 with open(OUT,'w') as f:
     json.dump(output, f, indent=2, cls=NpEncoder)
+
+# ── 6. APPEND TO HISTORY ──────────────────────────────────────────────────────
+history = []
+if os.path.exists(HIST_OUT):
+    with open(HIST_OUT) as f:
+        history = json.load(f)
+
+today_str = datetime.utcnow().strftime('%Y-%m-%d')
+# only append once per day
+if not history or history[-1].get('date') != today_str:
+    history.append({
+        'date': today_str,
+        'predicted_winner': winner['team'],
+        'probability': winner['probability'],
+        'top5': finalist_probs[:5],
+        'matches_used': finished_count,
+        'weights': W,
+    })
+    with open(HIST_OUT, 'w') as f:
+        json.dump(history, f, indent=2, cls=NpEncoder)
+    print(f'History updated: {len(history)} entries')
 
 print(f'\nDone. Predicted winner: {winner["team"]} ({winner["probability"]*100:.1f}%)')
 print(f'Output → {OUT}')

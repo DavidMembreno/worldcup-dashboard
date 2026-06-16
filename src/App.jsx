@@ -9,6 +9,7 @@ import BracketPage from './pages/BracketPage'
 import TeamPage from './pages/TeamPage'
 import ModelPage from './pages/ModelPage'
 import AllGamesPage from './pages/AllGamesPage'
+import PredictionHistoryPage from './pages/PredictionHistoryPage'
 
 function App() {
   const [splashDone, setSplashDone] = useState(false)
@@ -27,6 +28,7 @@ function App() {
               <Route path="/team/:teamName" element={<TeamPage />} />
               <Route path="/model" element={<ModelPage />} />
               <Route path="/games" element={<AllGamesPage />} />
+              <Route path="/history" element={<PredictionHistoryPage />} />
             </Routes>
           </BrowserRouter>
         </WorldCupProvider>

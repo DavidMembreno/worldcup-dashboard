@@ -32,10 +32,11 @@ export default function Home() {
     >
       <div className="min-h-screen bg-black/60 p-6">
 
-        {/* Projected Winner Banner */}
-        <div className="flex justify-center mb-10 mt-6">
+        {/* Projected Winner Banner — clickable → history page */}
+        <div className="flex justify-center mb-4 mt-6">
           <div
-            className="px-12 py-5 rounded-full text-center"
+            onClick={() => navigate('/history')}
+            className="px-12 py-5 rounded-full text-center cursor-pointer hover:opacity-90 transition"
             style={{ background: 'linear-gradient(90deg, #0A8A3A, #7ED957)' }}
           >
             <p
@@ -46,6 +47,11 @@ export default function Home() {
             </p>
           </div>
         </div>
+
+        {/* subtle hint */}
+        <p className="text-center text-gray-500 text-xs mb-8">
+          Click to see prediction history
+        </p>
 
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-4 mb-10 max-w-2xl mx-auto">
@@ -65,21 +71,19 @@ export default function Home() {
 
         {/* Recent Games */}
         <h2
-  className="text-center text-3xl mb-2"
-  style={{ fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.05em' }}
->
-  Recent Games
-</h2>
-<p className="text-center mb-6">
-  <button
-    onClick={() => navigate('/games')}
-    className="text-gray-400 hover:text-white text-xs underline underline-offset-2 transition"
-  >
-    View all {state.fixtures.length} matches
-  </button>
-</p>
-
-
+          className="text-center text-3xl mb-2"
+          style={{ fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.05em' }}
+        >
+          Recent Games
+        </h2>
+        <p className="text-center mb-6">
+          <button
+            onClick={() => navigate('/games')}
+            className="text-gray-400 hover:text-white text-xs underline underline-offset-2 transition"
+          >
+            View all {state.fixtures.length} matches
+          </button>
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {recent.length === 0 ? (

@@ -87,7 +87,7 @@ export default function TeamPage() {
   return (
     <div
       className="min-h-screen text-white"
-      style={{ backgroundImage: 'url(/src/assets/grass_bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/grass_bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <div className="min-h-screen bg-black/75 p-6">
 

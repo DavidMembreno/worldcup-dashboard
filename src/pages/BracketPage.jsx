@@ -153,7 +153,7 @@ export default function BracketPage() {
   return (
     <div
       className="min-h-screen text-white"
-      style={{ backgroundImage: 'url(/src/assets/grass_bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/grass_bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <div className="min-h-screen bg-black/80 p-4">
 
@@ -231,7 +231,7 @@ export default function BracketPage() {
                     World Cup Final
                   </p>
                   <MatchSlot match={FINAL[0]} onClick={goMatch} size="lg" />
-                  <img src="/src/assets/trophy.png" className="w-32 h-auto opacity-90" alt="Trophy" />
+                  <img src="/trophy.png" className="w-32 h-auto opacity-90" alt="Trophy" />
                   <p className="text-gray-400 text-xs text-center">Jul 19 · MetLife Stadium</p>
                 </div>
 

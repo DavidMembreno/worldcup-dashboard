@@ -25,7 +25,7 @@ export default function Home() {
     <div
       className="min-h-screen text-white"
       style={{
-        backgroundImage: 'url(/src/assets/grass_bg.jpg)',
+        backgroundImage: 'url(/grass_bg.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

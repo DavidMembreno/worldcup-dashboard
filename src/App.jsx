@@ -11,6 +11,7 @@ import ModelPage from './pages/ModelPage'
 import AllGamesPage from './pages/AllGamesPage'
 import PredictionHistoryPage from './pages/PredictionHistoryPage'
 import MonteCarloPage from './pages/MonteCarloPage'
+import StatsComparisonPage from './pages/StatsComparisonPage'
 
 function App() {
   const [splashDone, setSplashDone] = useState(false)
@@ -23,7 +24,6 @@ function App() {
           <BrowserRouter>
             <Navbar />
             <Routes>
-              <Route path="/montecarlo" element={<MonteCarloPage />} />
               <Route path="/" element={<Home />} />
               <Route path="/match/:espnId" element={<MatchPage />} />
               <Route path="/bracket" element={<BracketPage />} />
@@ -31,6 +31,8 @@ function App() {
               <Route path="/model" element={<ModelPage />} />
               <Route path="/games" element={<AllGamesPage />} />
               <Route path="/history" element={<PredictionHistoryPage />} />
+              <Route path="/montecarlo" element={<MonteCarloPage />} />
+              <Route path="/compare" element={<StatsComparisonPage />} />
             </Routes>
           </BrowserRouter>
         </WorldCupProvider>

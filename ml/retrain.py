@@ -467,6 +467,15 @@ if not history or history[-1].get('date') != today_str:
         'top5': finalist_probs[:5],
         'matches_used': finished_count,
         'weights': W,
+        'team_snapshots': {
+            t: {
+                'elo': round(elo.get(t, 1500), 1),
+                'form': round(form_probs[t] * 100, 2),
+                'xgb': round(xgb_probs[t] * 100, 2),
+                'mc': round(mc_probs.get(t, 0) * 100, 2),
+                'ensemble': round(ensemble.get(t, 0) * 100, 4),
+            } for t in WC26_TEAMS
+        }
     })
     with open(HIST_OUT, 'w') as f:
         json.dump(history, f, indent=2, cls=NpEncoder)

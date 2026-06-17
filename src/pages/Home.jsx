@@ -153,14 +153,20 @@ export default function Home() {
           )}
         </div>
 
-        <div className="flex justify-end max-w-5xl mx-auto mt-8">
-          <button
-            onClick={() => navigate('/bracket')}
-            className="px-6 py-3 rounded-full text-sm font-semibold text-white border border-white/30 hover:bg-white/10 transition"
-          >
-            See Full Game Bracket
-          </button>
-        </div>
+        <div className="flex justify-between max-w-5xl mx-auto mt-8">
+  <button
+    onClick={() => navigate('/compare')}
+    className="px-6 py-3 rounded-full text-sm font-semibold text-white border border-white/30 hover:bg-white/10 transition"
+  >
+    Compare Teams
+  </button>
+  <button
+    onClick={() => navigate('/bracket')}
+    className="px-6 py-3 rounded-full text-sm font-semibold text-white border border-white/30 hover:bg-white/10 transition"
+  >
+    See Full Game Bracket
+  </button>
+</div>
 
       </div>
     </div>

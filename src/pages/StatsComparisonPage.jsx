@@ -31,6 +31,15 @@ export default function StatsComparisonPage() {
     return Object.keys(last.team_snapshots).sort()
   }, [history])
 
+  const teamFlags = useMemo(() => {
+  const flags = {}
+  state.fixtures.forEach(f => {
+    if (f.home_team_name_en) flags[f.home_team_name_en] = f.home_flag
+    if (f.away_team_name_en) flags[f.away_team_name_en] = f.away_flag
+  })
+  return flags
+}, [state.fixtures])
+
   const chartData = useMemo(() => {
     return history.map(entry => {
       const point = { date: entry.date }
@@ -160,21 +169,25 @@ export default function StatsComparisonPage() {
               <p className="text-gray-400 text-xs mb-3">Toggle teams to compare ({selectedTeams.length} selected)</p>
               <div className="flex flex-wrap gap-2">
                 {allTeams.map(team => {
-                  const isSelected = selectedTeams.includes(team)
-                  return (
-                    <button
-                      key={team}
-                      onClick={() => toggleTeam(team)}
-                      className={`px-3 py-1.5 rounded-full text-xs border transition ${
-                        isSelected
-                          ? 'border-white/50 text-white bg-white/15'
-                          : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-gray-300'
-                      }`}
-                    >
-                      {team}
-                    </button>
-                  )
-                })}
+  const isSelected = selectedTeams.includes(team)
+  return (
+    <button
+      key={team}
+      onClick={() => toggleTeam(team)}
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition ${
+        isSelected
+          ? 'border-white/50 text-white bg-white/15'
+          : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-gray-300'
+      }`}
+    >
+      {teamFlags[team] && (
+        <img src={teamFlags[team]} className="w-4 h-4 rounded-full object-cover"
+          onError={e => e.target.style.display='none'} />
+      )}
+      {team}
+    </button>
+  )
+})}
               </div>
             </div>
           </>

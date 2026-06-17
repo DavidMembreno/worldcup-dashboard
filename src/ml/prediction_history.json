@@ -31,5 +31,40 @@
       "xgb": 0.25,
       "form": 0.5
     }
+  },
+  {
+    "date": "2026-06-17",
+    "predicted_winner": "England",
+    "probability": 0.0526,
+    "mc_winner": "Morocco",
+    "mc_probability": 0.0881,
+    "top5": [
+      {
+        "team": "England",
+        "probability": 0.0526
+      },
+      {
+        "team": "France",
+        "probability": 0.052
+      },
+      {
+        "team": "Sweden",
+        "probability": 0.0457
+      },
+      {
+        "team": "Australia",
+        "probability": 0.043
+      },
+      {
+        "team": "Argentina",
+        "probability": 0.043
+      }
+    ],
+    "matches_used": 22,
+    "weights": {
+      "elo": 0.25,
+      "xgb": 0.25,
+      "form": 0.5
+    }
   }
 ]

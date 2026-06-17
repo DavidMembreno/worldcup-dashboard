@@ -37,7 +37,7 @@
     "predicted_winner": "England",
     "probability": 0.0526,
     "mc_winner": "Morocco",
-    "mc_probability": 0.0824,
+    "mc_probability": 0.0914,
     "top5": [
       {
         "team": "England",
@@ -71,337 +71,481 @@
         "elo": 1686.6,
         "form": 3.22,
         "xgb": 4.33,
-        "mc": 5.65,
-        "ensemble": 3.3613
+        "mc": 5.35,
+        "ensemble": 3.3613,
+        "avg_possession": 39.5,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 80.0
       },
       "South Africa": {
         "elo": 1517.4,
         "form": 0.01,
         "xgb": 0.72,
         "mc": 0.0,
-        "ensemble": 0.6084
+        "ensemble": 0.6084,
+        "avg_possession": 60.5,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 90.0
       },
       "South Korea": {
         "elo": 1622.3,
         "form": 2.78,
         "xgb": 4.44,
-        "mc": 3.05,
-        "ensemble": 3.0776
+        "mc": 2.88,
+        "ensemble": 3.0776,
+        "avg_possession": 38.5,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 70.0
       },
       "Czech Republic": {
         "elo": 1571.1,
         "form": 1.46,
         "xgb": 2.32,
-        "mc": 1.82,
-        "ensemble": 1.8106
+        "mc": 1.64,
+        "ensemble": 1.8106,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       },
       "Canada": {
         "elo": 1585.3,
         "form": 0.88,
         "xgb": 0.72,
-        "mc": 1.92,
-        "ensemble": 1.1394
+        "mc": 2.1,
+        "ensemble": 1.1394,
+        "avg_possession": 38.9,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 60.0
       },
       "Bosnia and Herzegovina": {
         "elo": 1557.7,
         "form": 1.46,
         "xgb": 2.32,
         "mc": 0.0,
-        "ensemble": 1.7906
+        "ensemble": 1.7906,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       },
       "United States": {
         "elo": 1605.4,
         "form": 3.66,
         "xgb": 4.43,
-        "mc": 2.6,
-        "ensemble": 3.4877
+        "mc": 2.56,
+        "ensemble": 3.4877,
+        "avg_possession": 34.7,
+        "avg_shots_on_target": 1.0,
+        "avg_pass_pct": 70.0
       },
       "Paraguay": {
         "elo": 1499.8,
         "form": 0.01,
         "xgb": 0.48,
         "mc": 0.0,
-        "ensemble": 0.5232
+        "ensemble": 0.5232,
+        "avg_possession": 65.3,
+        "avg_shots_on_target": 6.0,
+        "avg_pass_pct": 90.0
       },
       "Qatar": {
         "elo": 1462.1,
         "form": 1.73,
         "xgb": 0.07,
         "mc": 0.0,
-        "ensemble": 1.2245
+        "ensemble": 1.2245,
+        "avg_possession": 68.0,
+        "avg_shots_on_target": 7.0,
+        "avg_pass_pct": 90.0
       },
       "Switzerland": {
         "elo": 1592.1,
         "form": 1.08,
         "xgb": 4.39,
-        "mc": 1.63,
-        "ensemble": 2.1694
+        "mc": 2.1,
+        "ensemble": 2.1694,
+        "avg_possession": 32.0,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 70.0
       },
       "Brazil": {
         "elo": 1617.9,
         "form": 2.43,
         "xgb": 0.31,
-        "mc": 2.83,
-        "ensemble": 1.861
+        "mc": 2.81,
+        "ensemble": 1.861,
+        "avg_possession": 48.6,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 90.0
       },
       "Morocco": {
         "elo": 1734.2,
         "form": 2.9,
         "xgb": 2.34,
-        "mc": 8.24,
-        "ensemble": 2.7655
+        "mc": 9.14,
+        "ensemble": 2.7655,
+        "avg_possession": 51.4,
+        "avg_shots_on_target": 5.0,
+        "avg_pass_pct": 90.0
       },
       "Haiti": {
         "elo": 1462.1,
         "form": 0.01,
         "xgb": 0.16,
         "mc": 0.0,
-        "ensemble": 0.3918
+        "ensemble": 0.3918,
+        "avg_possession": 46.3,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 80.0
       },
       "Scotland": {
         "elo": 1595.8,
         "form": 2.78,
         "xgb": 4.36,
-        "mc": 2.21,
-        "ensemble": 3.0173
+        "mc": 2.19,
+        "ensemble": 3.0173,
+        "avg_possession": 53.7,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 90.0
       },
       "Australia": {
         "elo": 1632.1,
         "form": 5.42,
         "xgb": 4.02,
-        "mc": 3.64,
-        "ensemble": 4.3044
+        "mc": 3.26,
+        "ensemble": 4.3044,
+        "avg_possession": 71.6,
+        "avg_shots_on_target": 8.0,
+        "avg_pass_pct": 90.0
       },
       "Turkey": {
         "elo": 1585.5,
         "form": 0.01,
         "xgb": 2.63,
-        "mc": 2.06,
-        "ensemble": 1.1863
+        "mc": 1.83,
+        "ensemble": 1.1863,
+        "avg_possession": 28.4,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 70.0
       },
       "Germany": {
         "elo": 1655.6,
         "form": 4.98,
         "xgb": 4.55,
-        "mc": 4.26,
-        "ensemble": 4.2512
+        "mc": 4.3,
+        "ensemble": 4.2512,
+        "avg_possession": 35.4,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 80.0
       },
       "Curacao": {
         "elo": 1481.2,
         "form": 0.01,
         "xgb": 0.12,
         "mc": 0.0,
-        "ensemble": 0.4069
+        "ensemble": 0.4069,
+        "avg_possession": 64.6,
+        "avg_shots_on_target": 12.0,
+        "avg_pass_pct": 90.0
       },
       "Netherlands": {
         "elo": 1615.8,
         "form": 2.37,
         "xgb": 0.37,
-        "mc": 2.62,
-        "ensemble": 1.8452
+        "mc": 2.9,
+        "ensemble": 1.8452,
+        "avg_possession": 40.2,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 80.0
       },
       "Japan": {
         "elo": 1621.2,
         "form": 2.72,
         "xgb": 1.89,
-        "mc": 2.87,
-        "ensemble": 2.4087
+        "mc": 2.86,
+        "ensemble": 2.4087,
+        "avg_possession": 59.8,
+        "avg_shots_on_target": 6.0,
+        "avg_pass_pct": 90.0
       },
       "Ivory Coast": {
         "elo": 1690.4,
         "form": 4.8,
         "xgb": 4.3,
-        "mc": 6.31,
-        "ensemble": 4.1487
+        "mc": 5.82,
+        "ensemble": 4.1487,
+        "avg_possession": 51.6,
+        "avg_shots_on_target": 1.0,
+        "avg_pass_pct": 90.0
       },
       "Ecuador": {
         "elo": 1563.7,
         "form": 0.01,
         "xgb": 0.39,
-        "mc": 1.34,
-        "ensemble": 0.5942
+        "mc": 1.39,
+        "ensemble": 0.5942,
+        "avg_possession": 48.4,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 80.0
       },
       "Sweden": {
         "elo": 1564.5,
         "form": 5.94,
         "xgb": 4.43,
-        "mc": 1.54,
-        "ensemble": 4.5684
+        "mc": 1.31,
+        "ensemble": 4.5684,
+        "avg_possession": 51.3,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 80.0
       },
       "Tunisia": {
         "elo": 1502.1,
         "form": 0.01,
         "xgb": 0.27,
         "mc": 0.0,
-        "ensemble": 0.472
+        "ensemble": 0.472,
+        "avg_possession": 48.7,
+        "avg_shots_on_target": 7.0,
+        "avg_pass_pct": 80.0
       },
       "Spain": {
         "elo": 1619.6,
         "form": 0.88,
         "xgb": 0.36,
-        "mc": 2.74,
-        "ensemble": 1.1024
+        "mc": 2.95,
+        "ensemble": 1.1024,
+        "avg_possession": 25.7,
+        "avg_shots_on_target": 1.0,
+        "avg_pass_pct": 70.0
       },
       "Cape Verde": {
         "elo": 1560.2,
         "form": 2.78,
         "xgb": 1.57,
-        "mc": 1.66,
-        "ensemble": 2.2659
+        "mc": 1.51,
+        "ensemble": 2.2659,
+        "avg_possession": 74.3,
+        "avg_shots_on_target": 7.0,
+        "avg_pass_pct": 90.0
       },
       "Belgium": {
         "elo": 1631.2,
         "form": 1.43,
         "xgb": 0.49,
-        "mc": 3.05,
-        "ensemble": 1.4281
+        "mc": 3.19,
+        "ensemble": 1.4281,
+        "avg_possession": 46.4,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 80.0
       },
       "Egypt": {
         "elo": 1605.5,
         "form": 2.61,
         "xgb": 1.75,
-        "mc": 2.63,
-        "ensemble": 2.2905
+        "mc": 2.55,
+        "ensemble": 2.2905,
+        "avg_possession": 53.6,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 90.0
       },
       "Uruguay": {
         "elo": 1539.9,
         "form": 1.14,
         "xgb": 0.31,
         "mc": 0.0,
-        "ensemble": 1.1021
+        "ensemble": 1.1021,
+        "avg_possession": 66.8,
+        "avg_shots_on_target": 10.0,
+        "avg_pass_pct": 90.0
       },
       "Saudi Arabia": {
         "elo": 1533.9,
         "form": 2.55,
         "xgb": 1.0,
         "mc": 0.0,
-        "ensemble": 1.9684
+        "ensemble": 1.9684,
+        "avg_possession": 33.2,
+        "avg_shots_on_target": 3.0,
+        "avg_pass_pct": 70.0
       },
       "Iran": {
         "elo": 1559.9,
         "form": 0.88,
         "xgb": 0.31,
         "mc": 0.0,
-        "ensemble": 0.9996
+        "ensemble": 0.9996,
+        "avg_possession": 51.5,
+        "avg_shots_on_target": 8.0,
+        "avg_pass_pct": 80.0
       },
       "New Zealand": {
         "elo": 1447.7,
         "form": 2.08,
         "xgb": 2.19,
         "mc": 0.0,
-        "ensemble": 1.9123
+        "ensemble": 1.9123,
+        "avg_possession": 48.5,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 80.0
       },
       "France": {
         "elo": 1640.9,
         "form": 7.0,
         "xgb": 4.37,
-        "mc": 3.72,
-        "ensemble": 5.1957
+        "mc": 3.43,
+        "ensemble": 5.1957,
+        "avg_possession": 46.3,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 90.0
       },
       "Senegal": {
         "elo": 1606.7,
         "form": 0.01,
         "xgb": 1.73,
-        "mc": 2.76,
-        "ensemble": 0.992
+        "mc": 2.45,
+        "ensemble": 0.992,
+        "avg_possession": 53.7,
+        "avg_shots_on_target": 8.0,
+        "avg_pass_pct": 90.0
       },
       "Iraq": {
         "elo": 1551.8,
         "form": 0.01,
         "xgb": 0.41,
         "mc": 0.0,
-        "ensemble": 0.5815
+        "ensemble": 0.5815,
+        "avg_possession": 61.3,
+        "avg_shots_on_target": 5.0,
+        "avg_pass_pct": 90.0
       },
       "Norway": {
         "elo": 1635.5,
         "form": 4.1,
         "xgb": 3.17,
-        "mc": 3.44,
-        "ensemble": 3.4376
+        "mc": 3.62,
+        "ensemble": 3.4376,
+        "avg_possession": 38.7,
+        "avg_shots_on_target": 1.0,
+        "avg_pass_pct": 80.0
       },
       "Argentina": {
         "elo": 1640.1,
         "form": 5.15,
         "xgb": 4.48,
-        "mc": 3.68,
-        "ensemble": 4.2991
+        "mc": 3.31,
+        "ensemble": 4.2991,
+        "avg_possession": 52.2,
+        "avg_shots_on_target": 1.0,
+        "avg_pass_pct": 90.0
       },
       "Algeria": {
         "elo": 1697.4,
         "form": 0.01,
         "xgb": 1.81,
-        "mc": 6.04,
-        "ensemble": 1.1433
+        "mc": 6.08,
+        "ensemble": 1.1433,
+        "avg_possession": 47.8,
+        "avg_shots_on_target": 6.0,
+        "avg_pass_pct": 90.0
       },
       "Austria": {
         "elo": 1618.0,
         "form": 3.22,
         "xgb": 3.85,
-        "mc": 3.06,
-        "ensemble": 3.1421
+        "mc": 3.0,
+        "ensemble": 3.1421,
+        "avg_possession": 36.8,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 70.0
       },
       "Jordan": {
         "elo": 1523.3,
         "form": 0.01,
         "xgb": 0.49,
         "mc": 0.0,
-        "ensemble": 0.5585
+        "ensemble": 0.5585,
+        "avg_possession": 63.2,
+        "avg_shots_on_target": 4.0,
+        "avg_pass_pct": 80.0
       },
       "Portugal": {
         "elo": 1621.3,
         "form": 0.88,
         "xgb": 0.17,
-        "mc": 3.08,
-        "ensemble": 1.0572
+        "mc": 3.2,
+        "ensemble": 1.0572,
+        "avg_possession": 24.6,
+        "avg_shots_on_target": 2.0,
+        "avg_pass_pct": 80.0
       },
       "DR Congo": {
         "elo": 1613.4,
         "form": 1.46,
         "xgb": 2.32,
-        "mc": 2.61,
-        "ensemble": 1.8739
+        "mc": 2.87,
+        "ensemble": 1.8739,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       },
       "England": {
         "elo": 1630.3,
         "form": 7.17,
         "xgb": 4.36,
-        "mc": 3.14,
-        "ensemble": 5.2638
+        "mc": 3.27,
+        "ensemble": 5.2638,
+        "avg_possession": 48.3,
+        "avg_shots_on_target": 5.0,
+        "avg_pass_pct": 90.0
       },
       "Croatia": {
         "elo": 1598.7,
         "form": 0.01,
         "xgb": 1.26,
         "mc": 0.0,
-        "ensemble": 0.8638
+        "ensemble": 0.8638,
+        "avg_possession": 51.7,
+        "avg_shots_on_target": 11.0,
+        "avg_pass_pct": 90.0
       },
       "Ghana": {
         "elo": 1490.5,
         "form": 1.46,
         "xgb": 2.32,
         "mc": 0.0,
-        "ensemble": 1.6932
+        "ensemble": 1.6932,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       },
       "Panama": {
         "elo": 1588.7,
         "form": 1.46,
         "xgb": 2.32,
-        "mc": 1.85,
-        "ensemble": 1.8369
+        "mc": 1.99,
+        "ensemble": 1.8369,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       },
       "Uzbekistan": {
         "elo": 1523.9,
         "form": 1.46,
         "xgb": 2.32,
         "mc": 0.0,
-        "ensemble": 1.7409
+        "ensemble": 1.7409,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       },
       "Colombia": {
         "elo": 1588.7,
         "form": 1.46,
         "xgb": 2.32,
-        "mc": 1.95,
-        "ensemble": 1.837
+        "mc": 2.14,
+        "ensemble": 1.837,
+        "avg_possession": null,
+        "avg_shots_on_target": null,
+        "avg_pass_pct": null
       }
     }
   }

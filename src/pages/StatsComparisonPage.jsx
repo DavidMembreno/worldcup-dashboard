@@ -9,6 +9,9 @@ const METRICS = [
   { key: 'xgb', label: 'XGBoost Score %' },
   { key: 'mc', label: 'Monte Carlo Win %' },
   { key: 'ensemble', label: 'Ensemble Win %' },
+  { key: 'avg_possession', label: 'Avg Possession %' },
+  { key: 'avg_shots_on_target', label: 'Avg Shots on Target' },
+  { key: 'avg_pass_pct', label: 'Avg Pass Accuracy %' },
 ]
 
 const TEAM_COLORS = [

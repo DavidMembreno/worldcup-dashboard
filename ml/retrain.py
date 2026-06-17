@@ -468,14 +468,27 @@ if not history or history[-1].get('date') != today_str:
         'matches_used': finished_count,
         'weights': W,
         'team_snapshots': {
-            t: {
-                'elo': round(elo.get(t, 1500), 1),
-                'form': round(form_probs[t] * 100, 2),
-                'xgb': round(xgb_probs[t] * 100, 2),
-                'mc': round(mc_probs.get(t, 0) * 100, 2),
-                'ensemble': round(ensemble.get(t, 0) * 100, 4),
-            } for t in WC26_TEAMS
-        }
+    t: (lambda team_matches: {
+        'elo': round(elo.get(t, 1500), 1),
+        'form': round(form_probs[t] * 100, 2),
+        'xgb': round(xgb_probs[t] * 100, 2),
+        'mc': round(mc_probs.get(t, 0) * 100, 2),
+        'ensemble': round(ensemble.get(t, 0) * 100, 4),
+        'avg_possession': round(np.mean([
+            float(s['home_possession']) if s['home'] == t else float(s['away_possession'])
+            for s in team_matches if (s.get('home_possession') if s['home']==t else s.get('away_possession')) is not None
+        ]), 1) if team_matches else None,
+        'avg_shots_on_target': round(np.mean([
+            float(s['home_shots_on_target']) if s['home'] == t else float(s['away_shots_on_target'])
+            for s in team_matches if (s.get('home_shots_on_target') if s['home']==t else s.get('away_shots_on_target')) is not None
+        ]), 1) if team_matches else None,
+        'avg_pass_pct': round(np.mean([
+            float(s['home_pass_pct']) if s['home'] == t else float(s['away_pass_pct'])
+            for s in team_matches if (s.get('home_pass_pct') if s['home']==t else s.get('away_pass_pct')) is not None
+        ]) * 100, 1) if team_matches else None,
+    })([s for s in match_stats.values() if s.get('status')=='STATUS_FULL_TIME' and (s.get('home')==t or s.get('away')==t)])
+    for t in WC26_TEAMS
+}
     })
     with open(HIST_OUT, 'w') as f:
         json.dump(history, f, indent=2, cls=NpEncoder)

@@ -4,11 +4,11 @@ import { useWorldCup } from '../context/WorldCupContext'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 const METRICS = [
-  { key: 'elo', label: 'Elo Rating', color: '#38AEFF' },
-  { key: 'form', label: 'Current Form %', color: '#FACC15' },
-  { key: 'xgb', label: 'XGBoost Score %', color: '#34D399' },
-  { key: 'mc', label: 'Monte Carlo Win %', color: '#F97316' },
-  { key: 'ensemble', label: 'Ensemble Win %', color: '#7ED957' },
+  { key: 'elo', label: 'Elo Rating' },
+  { key: 'form', label: 'Current Form %' },
+  { key: 'xgb', label: 'XGBoost Score %' },
+  { key: 'mc', label: 'Monte Carlo Win %' },
+  { key: 'ensemble', label: 'Ensemble Win %' },
 ]
 
 const TEAM_COLORS = [
@@ -25,32 +25,32 @@ export default function StatsComparisonPage() {
   const [metric, setMetric] = useState('elo')
   const [selectedTeams, setSelectedTeams] = useState([])
 
+  const validHistory = history.filter(h => h.team_snapshots && Object.keys(h.team_snapshots).length > 0)
+
   const allTeams = useMemo(() => {
-    const last = history[history.length - 1]
-    if (!last?.team_snapshots) return []
+    if (validHistory.length === 0) return []
+    const last = validHistory[validHistory.length - 1]
     return Object.keys(last.team_snapshots).sort()
-  }, [history])
+  }, [validHistory])
 
   const teamFlags = useMemo(() => {
-  const flags = {}
-  state.fixtures.forEach(f => {
-    if (f.home_team_name_en) flags[f.home_team_name_en] = f.home_flag
-    if (f.away_team_name_en) flags[f.away_team_name_en] = f.away_flag
-  })
-  return flags
-}, [state.fixtures])
+    const flags = {}
+    state.fixtures.forEach(f => {
+      if (f.home_team_name_en) flags[f.home_team_name_en] = f.home_flag
+      if (f.away_team_name_en) flags[f.away_team_name_en] = f.away_flag
+    })
+    return flags
+  }, [state.fixtures])
 
   const chartData = useMemo(() => {
-    return history.map(entry => {
+    return validHistory.map(entry => {
       const point = { date: entry.date }
-      if (entry.team_snapshots) {
-        Object.entries(entry.team_snapshots).forEach(([team, stats]) => {
-          point[team] = stats[metric]
-        })
-      }
+      Object.entries(entry.team_snapshots).forEach(([team, stats]) => {
+        point[team] = stats[metric]
+      })
       return point
     })
-  }, [history, metric])
+  }, [validHistory, metric])
 
   const toggleTeam = (team) => {
     setSelectedTeams(prev =>
@@ -60,8 +60,8 @@ export default function StatsComparisonPage() {
 
   const clearAll = () => setSelectedTeams([])
   const selectTop5 = () => {
-    const last = history[history.length - 1]
-    if (!last?.team_snapshots) return
+    if (validHistory.length === 0) return
+    const last = validHistory[validHistory.length - 1]
     const top5 = Object.entries(last.team_snapshots)
       .sort((a, b) => b[1][metric] - a[1][metric])
       .slice(0, 5)
@@ -69,7 +69,7 @@ export default function StatsComparisonPage() {
     setSelectedTeams(top5)
   }
 
-  const hasEnoughData = history.length > 1
+  const hasEnoughData = validHistory.length > 1
 
   return (
     <div
@@ -86,20 +86,22 @@ export default function StatsComparisonPage() {
           style={{ fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.05em' }}>
           Team Comparison
         </h1>
-        <p className="text-gray-400 text-center text-sm mb-8">
-          Track how team metrics evolve over the tournament — select teams and a metric to compare
+        <p className="text-gray-400 text-center text-sm mb-2">
+          Track how team metrics evolve over the tournament
+        </p>
+        <p className="text-gray-600 text-center text-xs mb-8">
+          {validHistory.length} day(s) of history · {allTeams.length} teams tracked
         </p>
 
-        {!hasEnoughData ? (
+        {allTeams.length === 0 ? (
           <div className="max-w-xl mx-auto text-center bg-black/50 rounded-2xl p-8 border border-white/10">
-            <p className="text-gray-300 mb-2">Not enough history yet.</p>
+            <p className="text-gray-300 mb-2">No team data found.</p>
             <p className="text-gray-500 text-sm">
-              This chart needs at least 2 days of data. Run retrain.py daily and check back tomorrow.
+              Run retrain.py and push the updated prediction_history.json — make sure the deploy includes it.
             </p>
           </div>
         ) : (
           <>
-            {/* metric selector */}
             <div className="flex justify-center gap-2 mb-6 flex-wrap">
               {METRICS.map(m => (
                 <button
@@ -110,14 +112,12 @@ export default function StatsComparisonPage() {
                       ? 'border-white/50 text-white bg-white/10'
                       : 'border-white/10 text-gray-400 hover:border-white/30'
                   }`}
-                  style={{ borderColor: metric === m.key ? m.color : undefined }}
                 >
                   {m.label}
                 </button>
               ))}
             </div>
 
-            {/* team toggle controls */}
             <div className="flex justify-center gap-2 mb-4">
               <button
                 onClick={selectTop5}
@@ -133,7 +133,12 @@ export default function StatsComparisonPage() {
               </button>
             </div>
 
-            {/* chart */}
+            {!hasEnoughData && (
+              <p className="text-center text-yellow-400 text-xs mb-4">
+                Only 1 day of history so far — the line chart needs at least 2 days. Selecting teams will still show today's values.
+              </p>
+            )}
+
             <div className="max-w-5xl mx-auto bg-black/50 rounded-2xl p-6 border border-white/10 mb-6">
               {selectedTeams.length === 0 ? (
                 <div className="h-96 flex items-center justify-center">
@@ -164,30 +169,29 @@ export default function StatsComparisonPage() {
               )}
             </div>
 
-            {/* team toggle grid */}
             <div className="max-w-5xl mx-auto bg-black/50 rounded-2xl p-6 border border-white/10">
               <p className="text-gray-400 text-xs mb-3">Toggle teams to compare ({selectedTeams.length} selected)</p>
               <div className="flex flex-wrap gap-2">
                 {allTeams.map(team => {
-  const isSelected = selectedTeams.includes(team)
-  return (
-    <button
-      key={team}
-      onClick={() => toggleTeam(team)}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition ${
-        isSelected
-          ? 'border-white/50 text-white bg-white/15'
-          : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-gray-300'
-      }`}
-    >
-      {teamFlags[team] && (
-        <img src={teamFlags[team]} className="w-4 h-4 rounded-full object-cover"
-          onError={e => e.target.style.display='none'} />
-      )}
-      {team}
-    </button>
-  )
-})}
+                  const isSelected = selectedTeams.includes(team)
+                  return (
+                    <button
+                      key={team}
+                      onClick={() => toggleTeam(team)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition ${
+                        isSelected
+                          ? 'border-white/50 text-white bg-white/15'
+                          : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-gray-300'
+                      }`}
+                    >
+                      {teamFlags[team] && (
+                        <img src={teamFlags[team]} className="w-4 h-4 rounded-full object-cover"
+                          onError={e => e.target.style.display='none'} />
+                      )}
+                      {team}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </>

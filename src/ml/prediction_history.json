@@ -37,7 +37,7 @@
     "predicted_winner": "England",
     "probability": 0.0526,
     "mc_winner": "Morocco",
-    "mc_probability": 0.0881,
+    "mc_probability": 0.0824,
     "top5": [
       {
         "team": "England",
@@ -65,6 +65,344 @@
       "elo": 0.25,
       "xgb": 0.25,
       "form": 0.5
+    },
+    "team_snapshots": {
+      "Mexico": {
+        "elo": 1686.6,
+        "form": 3.22,
+        "xgb": 4.33,
+        "mc": 5.65,
+        "ensemble": 3.3613
+      },
+      "South Africa": {
+        "elo": 1517.4,
+        "form": 0.01,
+        "xgb": 0.72,
+        "mc": 0.0,
+        "ensemble": 0.6084
+      },
+      "South Korea": {
+        "elo": 1622.3,
+        "form": 2.78,
+        "xgb": 4.44,
+        "mc": 3.05,
+        "ensemble": 3.0776
+      },
+      "Czech Republic": {
+        "elo": 1571.1,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 1.82,
+        "ensemble": 1.8106
+      },
+      "Canada": {
+        "elo": 1585.3,
+        "form": 0.88,
+        "xgb": 0.72,
+        "mc": 1.92,
+        "ensemble": 1.1394
+      },
+      "Bosnia and Herzegovina": {
+        "elo": 1557.7,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 0.0,
+        "ensemble": 1.7906
+      },
+      "United States": {
+        "elo": 1605.4,
+        "form": 3.66,
+        "xgb": 4.43,
+        "mc": 2.6,
+        "ensemble": 3.4877
+      },
+      "Paraguay": {
+        "elo": 1499.8,
+        "form": 0.01,
+        "xgb": 0.48,
+        "mc": 0.0,
+        "ensemble": 0.5232
+      },
+      "Qatar": {
+        "elo": 1462.1,
+        "form": 1.73,
+        "xgb": 0.07,
+        "mc": 0.0,
+        "ensemble": 1.2245
+      },
+      "Switzerland": {
+        "elo": 1592.1,
+        "form": 1.08,
+        "xgb": 4.39,
+        "mc": 1.63,
+        "ensemble": 2.1694
+      },
+      "Brazil": {
+        "elo": 1617.9,
+        "form": 2.43,
+        "xgb": 0.31,
+        "mc": 2.83,
+        "ensemble": 1.861
+      },
+      "Morocco": {
+        "elo": 1734.2,
+        "form": 2.9,
+        "xgb": 2.34,
+        "mc": 8.24,
+        "ensemble": 2.7655
+      },
+      "Haiti": {
+        "elo": 1462.1,
+        "form": 0.01,
+        "xgb": 0.16,
+        "mc": 0.0,
+        "ensemble": 0.3918
+      },
+      "Scotland": {
+        "elo": 1595.8,
+        "form": 2.78,
+        "xgb": 4.36,
+        "mc": 2.21,
+        "ensemble": 3.0173
+      },
+      "Australia": {
+        "elo": 1632.1,
+        "form": 5.42,
+        "xgb": 4.02,
+        "mc": 3.64,
+        "ensemble": 4.3044
+      },
+      "Turkey": {
+        "elo": 1585.5,
+        "form": 0.01,
+        "xgb": 2.63,
+        "mc": 2.06,
+        "ensemble": 1.1863
+      },
+      "Germany": {
+        "elo": 1655.6,
+        "form": 4.98,
+        "xgb": 4.55,
+        "mc": 4.26,
+        "ensemble": 4.2512
+      },
+      "Curacao": {
+        "elo": 1481.2,
+        "form": 0.01,
+        "xgb": 0.12,
+        "mc": 0.0,
+        "ensemble": 0.4069
+      },
+      "Netherlands": {
+        "elo": 1615.8,
+        "form": 2.37,
+        "xgb": 0.37,
+        "mc": 2.62,
+        "ensemble": 1.8452
+      },
+      "Japan": {
+        "elo": 1621.2,
+        "form": 2.72,
+        "xgb": 1.89,
+        "mc": 2.87,
+        "ensemble": 2.4087
+      },
+      "Ivory Coast": {
+        "elo": 1690.4,
+        "form": 4.8,
+        "xgb": 4.3,
+        "mc": 6.31,
+        "ensemble": 4.1487
+      },
+      "Ecuador": {
+        "elo": 1563.7,
+        "form": 0.01,
+        "xgb": 0.39,
+        "mc": 1.34,
+        "ensemble": 0.5942
+      },
+      "Sweden": {
+        "elo": 1564.5,
+        "form": 5.94,
+        "xgb": 4.43,
+        "mc": 1.54,
+        "ensemble": 4.5684
+      },
+      "Tunisia": {
+        "elo": 1502.1,
+        "form": 0.01,
+        "xgb": 0.27,
+        "mc": 0.0,
+        "ensemble": 0.472
+      },
+      "Spain": {
+        "elo": 1619.6,
+        "form": 0.88,
+        "xgb": 0.36,
+        "mc": 2.74,
+        "ensemble": 1.1024
+      },
+      "Cape Verde": {
+        "elo": 1560.2,
+        "form": 2.78,
+        "xgb": 1.57,
+        "mc": 1.66,
+        "ensemble": 2.2659
+      },
+      "Belgium": {
+        "elo": 1631.2,
+        "form": 1.43,
+        "xgb": 0.49,
+        "mc": 3.05,
+        "ensemble": 1.4281
+      },
+      "Egypt": {
+        "elo": 1605.5,
+        "form": 2.61,
+        "xgb": 1.75,
+        "mc": 2.63,
+        "ensemble": 2.2905
+      },
+      "Uruguay": {
+        "elo": 1539.9,
+        "form": 1.14,
+        "xgb": 0.31,
+        "mc": 0.0,
+        "ensemble": 1.1021
+      },
+      "Saudi Arabia": {
+        "elo": 1533.9,
+        "form": 2.55,
+        "xgb": 1.0,
+        "mc": 0.0,
+        "ensemble": 1.9684
+      },
+      "Iran": {
+        "elo": 1559.9,
+        "form": 0.88,
+        "xgb": 0.31,
+        "mc": 0.0,
+        "ensemble": 0.9996
+      },
+      "New Zealand": {
+        "elo": 1447.7,
+        "form": 2.08,
+        "xgb": 2.19,
+        "mc": 0.0,
+        "ensemble": 1.9123
+      },
+      "France": {
+        "elo": 1640.9,
+        "form": 7.0,
+        "xgb": 4.37,
+        "mc": 3.72,
+        "ensemble": 5.1957
+      },
+      "Senegal": {
+        "elo": 1606.7,
+        "form": 0.01,
+        "xgb": 1.73,
+        "mc": 2.76,
+        "ensemble": 0.992
+      },
+      "Iraq": {
+        "elo": 1551.8,
+        "form": 0.01,
+        "xgb": 0.41,
+        "mc": 0.0,
+        "ensemble": 0.5815
+      },
+      "Norway": {
+        "elo": 1635.5,
+        "form": 4.1,
+        "xgb": 3.17,
+        "mc": 3.44,
+        "ensemble": 3.4376
+      },
+      "Argentina": {
+        "elo": 1640.1,
+        "form": 5.15,
+        "xgb": 4.48,
+        "mc": 3.68,
+        "ensemble": 4.2991
+      },
+      "Algeria": {
+        "elo": 1697.4,
+        "form": 0.01,
+        "xgb": 1.81,
+        "mc": 6.04,
+        "ensemble": 1.1433
+      },
+      "Austria": {
+        "elo": 1618.0,
+        "form": 3.22,
+        "xgb": 3.85,
+        "mc": 3.06,
+        "ensemble": 3.1421
+      },
+      "Jordan": {
+        "elo": 1523.3,
+        "form": 0.01,
+        "xgb": 0.49,
+        "mc": 0.0,
+        "ensemble": 0.5585
+      },
+      "Portugal": {
+        "elo": 1621.3,
+        "form": 0.88,
+        "xgb": 0.17,
+        "mc": 3.08,
+        "ensemble": 1.0572
+      },
+      "DR Congo": {
+        "elo": 1613.4,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 2.61,
+        "ensemble": 1.8739
+      },
+      "England": {
+        "elo": 1630.3,
+        "form": 7.17,
+        "xgb": 4.36,
+        "mc": 3.14,
+        "ensemble": 5.2638
+      },
+      "Croatia": {
+        "elo": 1598.7,
+        "form": 0.01,
+        "xgb": 1.26,
+        "mc": 0.0,
+        "ensemble": 0.8638
+      },
+      "Ghana": {
+        "elo": 1490.5,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 0.0,
+        "ensemble": 1.6932
+      },
+      "Panama": {
+        "elo": 1588.7,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 1.85,
+        "ensemble": 1.8369
+      },
+      "Uzbekistan": {
+        "elo": 1523.9,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 0.0,
+        "ensemble": 1.7409
+      },
+      "Colombia": {
+        "elo": 1588.7,
+        "form": 1.46,
+        "xgb": 2.32,
+        "mc": 1.95,
+        "ensemble": 1.837
+      }
     }
   }
 ]

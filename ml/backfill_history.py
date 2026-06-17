@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import json
 import os
+import sys
+import random
 from collections import Counter
 from xgboost import XGBClassifier
 
@@ -10,7 +12,6 @@ HIST  = os.path.join(BASE, 'historical_results.csv')
 STATS = os.path.join(BASE, '..', 'src', 'ml', 'match_stats.json')
 HIST_OUT = os.path.join(BASE, '..', 'src', 'ml', 'prediction_history.json')
 
-import sys
 BACKFILL_DATE = sys.argv[1] if len(sys.argv) > 1 else '2026-06-16'
 
 WC26_TEAMS = [
@@ -23,6 +24,15 @@ WC26_TEAMS = [
     'Austria','Jordan','Portugal','DR Congo','England','Croatia','Ghana',
     'Panama','Uzbekistan','Colombia'
 ]
+
+NAME_MAP = {
+    'Bosnia-Herzegovina': 'Bosnia and Herzegovina',
+    'Congo DR': 'DR Congo',
+    'Czechia': 'Czech Republic',
+}
+
+def norm(name):
+    return NAME_MAP.get(name, name)
 
 FIFA_RANKINGS = {
     'Argentina': 1, 'France': 2, 'England': 3, 'Brazil': 4,
@@ -41,6 +51,21 @@ FIFA_RANKINGS = {
     'Curacao': 86, 'Congo DR': 50,
 }
 
+GROUPS = {
+    'A': ['Mexico','South Korea','Czech Republic','South Africa'],
+    'B': ['Canada','Bosnia and Herzegovina','Qatar','Switzerland'],
+    'C': ['Brazil','Morocco','Haiti','Scotland'],
+    'D': ['United States','Australia','Turkey','Paraguay'],
+    'E': ['Germany','Ivory Coast','Ecuador','Curacao'],
+    'F': ['Netherlands','Japan','Sweden','Tunisia'],
+    'G': ['Belgium','New Zealand','Iran','Egypt'],
+    'H': ['Spain','Uruguay','Saudi Arabia','Cape Verde'],
+    'I': ['France','Senegal','Iraq','Norway'],
+    'J': ['Argentina','Algeria','Austria','Jordan'],
+    'K': ['Portugal','DR Congo','England','Croatia'],
+    'L': ['Ghana','Panama','Uzbekistan','Colombia'],
+}
+
 def expected(ra, rb):
     return 1 / (1 + 10 ** ((rb - ra) / 400))
 
@@ -52,13 +77,11 @@ def update_elo(ra, rb, result, k=32):
 
 print(f'Backfilling history for {BACKFILL_DATE}...')
 
-# load historical 2025-2026 data
 df = pd.read_csv(HIST)
 df = df.dropna(subset=['home_score','away_score'])
 df['date'] = pd.to_datetime(df['date'])
 df = df[df['date'] >= '2025-01-01'].copy()
 
-# load match_stats but ONLY keep matches that happened on or before BACKFILL_DATE
 with open(STATS) as f:
     all_match_stats = json.load(f)
 
@@ -70,7 +93,6 @@ match_stats = {
 }
 print(f'  Matches available as of {BACKFILL_DATE}: {len(match_stats)}')
 
-# compute Elo using only historical + matches up to cutoff
 elo = {}
 for _, row in df.iterrows():
     h, a = row['home_team'], row['away_team']
@@ -81,7 +103,7 @@ for _, row in df.iterrows():
     elo[h], elo[a] = update_elo(elo[h], elo[a], result, k=40)
 
 for stat in match_stats.values():
-    home, away = stat.get('home'), stat.get('away')
+    home, away = norm(stat.get('home')), norm(stat.get('away'))
     hg, ag = stat.get('home_score'), stat.get('away_score')
     if not home or not away or hg is None or ag is None: continue
     if home not in elo: elo[home] = 1500
@@ -89,7 +111,6 @@ for stat in match_stats.values():
     result = 'home' if hg > ag else 'away' if hg < ag else 'draw'
     elo[home], elo[away] = update_elo(elo[home], elo[away], result, k=60)
 
-# XGBoost
 rows = []
 for _, row in df.iterrows():
     h, a = row['home_team'], row['away_team']
@@ -101,7 +122,7 @@ for _, row in df.iterrows():
         'possession_diff': 0, 'shots_diff': 0, 'pass_pct_diff': 0, 'result': result
     })
 for stat in match_stats.values():
-    home, away = stat.get('home'), stat.get('away')
+    home, away = norm(stat.get('home')), norm(stat.get('away'))
     if not home or not away: continue
     hg, ag = stat.get('home_score', 0) or 0, stat.get('away_score', 0) or 0
     result = 1 if hg > ag else 0 if hg < ag else 2
@@ -135,23 +156,6 @@ def xgb_predict(home, away, h_poss=50, a_poss=50, h_shots=3, a_shots=3, h_pass=0
         'away': float(probs[classes.index(0)]) if 0 in classes else 0.33,
         'draw': float(probs[classes.index(2)]) if 2 in classes else 0.34,
     }
-
-# Monte Carlo
-import random
-GROUPS = {
-    'A': ['Mexico','South Korea','Czech Republic','South Africa'],
-    'B': ['Canada','Bosnia and Herzegovina','Qatar','Switzerland'],
-    'C': ['Brazil','Morocco','Haiti','Scotland'],
-    'D': ['United States','Australia','Turkey','Paraguay'],
-    'E': ['Germany','Ivory Coast','Ecuador','Curacao'],
-    'F': ['Netherlands','Japan','Sweden','Tunisia'],
-    'G': ['Belgium','New Zealand','Iran','Egypt'],
-    'H': ['Spain','Uruguay','Saudi Arabia','Cape Verde'],
-    'I': ['France','Senegal','Iraq','Norway'],
-    'J': ['Argentina','Algeria','Austria','Jordan'],
-    'K': ['Portugal','DR Congo','England','Croatia'],
-    'L': ['Ghana','Panama','Uzbekistan','Colombia'],
-}
 
 def elo_match_probs(home, away):
     eh, ea = elo.get(home, 1500), elo.get(away, 1500)
@@ -188,7 +192,6 @@ def run_monte_carlo(sims=10000):
 
 mc_probs = run_monte_carlo(10000)
 
-# Ensemble signals
 finished_count = len(match_stats)
 W = {'elo': 0.50, 'xgb': 0.10, 'form': 0.40} if finished_count < 24 else {'elo': 0.25, 'xgb': 0.25, 'form': 0.50}
 
@@ -198,13 +201,13 @@ elo_probs = {t: v/elo_total for t,v in elo_raw.items()}
 
 xgb_scores = {}
 for t in WC26_TEAMS:
-    team_stats = [s for s in match_stats.values() if s.get('home')==t or s.get('away')==t]
+    team_stats = [s for s in match_stats.values() if norm(s.get('home'))==t or norm(s.get('away'))==t]
     if not team_stats:
         xgb_scores[t] = 0.5; continue
     probs = []
     for s in team_stats:
-        is_home = s.get('home') == t
-        opp = s.get('away') if is_home else s.get('home')
+        is_home = norm(s.get('home')) == t
+        opp = norm(s.get('away')) if is_home else norm(s.get('home'))
         hp = float(s.get('home_possession') or 50); ap = float(s.get('away_possession') or 50)
         hsh = float(s.get('home_shots_on_target') or 3); ash = float(s.get('away_shots_on_target') or 3)
         hpp = float(s.get('home_pass_pct') or 0.8); app = float(s.get('away_pass_pct') or 0.8)
@@ -219,15 +222,16 @@ form_scores = {}
 for t in WC26_TEAMS:
     pts, gf, ga, played = 0, 0, 0, 0
     for s in match_stats.values():
-        if s.get('home') == t:
+        home_n, away_n = norm(s.get('home')), norm(s.get('away'))
+        if home_n == t:
             hg, ag = s.get('home_score') or 0, s.get('away_score') or 0
-            opp_rank = FIFA_RANKINGS.get(s.get('away'), 50)
+            opp_rank = FIFA_RANKINGS.get(away_n, 50)
             w = max(0.5, (51-opp_rank)/25)
             gf+=hg; ga+=ag; played+=1
             pts += (3 if hg>ag else 1 if hg==ag else 0) * w
-        elif s.get('away') == t:
+        elif away_n == t:
             hg, ag = s.get('home_score') or 0, s.get('away_score') or 0
-            opp_rank = FIFA_RANKINGS.get(s.get('home'), 50)
+            opp_rank = FIFA_RANKINGS.get(home_n, 50)
             w = max(0.5, (51-opp_rank)/25)
             gf+=ag; ga+=hg; played+=1
             pts += (3 if ag>hg else 1 if ag==hg else 0) * w
@@ -239,35 +243,36 @@ ensemble = {t: W['elo']*elo_probs[t] + W['xgb']*xgb_probs[t] + W['form']*form_pr
 total = sum(ensemble.values())
 ensemble = {t: v/total for t,v in ensemble.items()}
 
-# avg stats per team
-def team_avg(t, field):
-    vals = []
-    for s in match_stats.values():
-        if s.get('home') == t and s.get(f'home_{field}') is not None:
-            vals.append(float(s[f'home_{field}']))
-        elif s.get('away') == t and s.get(f'away_{field}') is not None:
-            vals.append(float(s[f'away_{field}']))
-    return round(np.mean(vals), 1) if vals else None
-
-team_snapshots = {}
-for t in WC26_TEAMS:
-    team_snapshots[t] = {
+def build_team_snapshot(t):
+    tm = [s for s in match_stats.values() if norm(s.get('home'))==t or norm(s.get('away'))==t]
+    def avg_field(field):
+        vals = []
+        for m in tm:
+            is_home = norm(m.get('home')) == t
+            val = m.get(f'home_{field}') if is_home else m.get(f'away_{field}')
+            if val is not None:
+                vals.append(float(val))
+        return round(float(np.mean(vals)), 2) if vals else None
+    pass_pct = avg_field('pass_pct')
+    return {
         'elo': round(elo.get(t, 1500), 1),
         'form': round(form_probs[t]*100, 2),
         'xgb': round(xgb_probs[t]*100, 2),
         'mc': round(mc_probs.get(t, 0)*100, 2),
         'ensemble': round(ensemble.get(t, 0)*100, 4),
-        'avg_possession': team_avg(t, 'possession'),
-        'avg_shots': team_avg(t, 'shots'),
-        'avg_shots_on_target': team_avg(t, 'shots_on_target'),
-        'avg_pass_pct': round(team_avg(t, 'pass_pct')*100, 1) if team_avg(t, 'pass_pct') else None,
-        'avg_corners': team_avg(t, 'corners'),
-        'avg_fouls': team_avg(t, 'fouls'),
-        'avg_yellows': team_avg(t, 'yellows'),
-        'avg_saves': team_avg(t, 'saves'),
-        'avg_tackles': team_avg(t, 'tackles'),
-        'avg_interceptions': team_avg(t, 'interceptions'),
+        'avg_possession': avg_field('possession'),
+        'avg_shots': avg_field('shots'),
+        'avg_shots_on_target': avg_field('shots_on_target'),
+        'avg_pass_pct': round(pass_pct * 100, 1) if pass_pct is not None else None,
+        'avg_corners': avg_field('corners'),
+        'avg_fouls': avg_field('fouls'),
+        'avg_yellows': avg_field('yellows'),
+        'avg_saves': avg_field('saves'),
+        'avg_tackles': avg_field('tackles'),
+        'avg_interceptions': avg_field('interceptions'),
     }
+
+team_snapshots = {t: build_team_snapshot(t) for t in WC26_TEAMS}
 
 finalist_probs = sorted([{'team':t,'probability':round(p,4)} for t,p in ensemble.items()], key=lambda x:-x['probability'])
 mc_ranked = sorted([{'team':t,'probability':mc_probs[t]} for t in WC26_TEAMS], key=lambda x:-x['probability'])
@@ -284,7 +289,6 @@ new_entry = {
     'team_snapshots': team_snapshots,
 }
 
-# insert into history, sorted by date, no duplicates
 with open(HIST_OUT) as f:
     history = json.load(f)
 

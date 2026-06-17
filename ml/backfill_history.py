@@ -258,8 +258,15 @@ for t in WC26_TEAMS:
         'mc': round(mc_probs.get(t, 0)*100, 2),
         'ensemble': round(ensemble.get(t, 0)*100, 4),
         'avg_possession': team_avg(t, 'possession'),
+        'avg_shots': team_avg(t, 'shots'),
         'avg_shots_on_target': team_avg(t, 'shots_on_target'),
         'avg_pass_pct': round(team_avg(t, 'pass_pct')*100, 1) if team_avg(t, 'pass_pct') else None,
+        'avg_corners': team_avg(t, 'corners'),
+        'avg_fouls': team_avg(t, 'fouls'),
+        'avg_yellows': team_avg(t, 'yellows'),
+        'avg_saves': team_avg(t, 'saves'),
+        'avg_tackles': team_avg(t, 'tackles'),
+        'avg_interceptions': team_avg(t, 'interceptions'),
     }
 
 finalist_probs = sorted([{'team':t,'probability':round(p,4)} for t,p in ensemble.items()], key=lambda x:-x['probability'])

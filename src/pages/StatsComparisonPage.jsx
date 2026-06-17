@@ -10,8 +10,15 @@ const METRICS = [
   { key: 'mc', label: 'Monte Carlo Win %' },
   { key: 'ensemble', label: 'Ensemble Win %' },
   { key: 'avg_possession', label: 'Avg Possession %' },
+  { key: 'avg_shots', label: 'Avg Total Shots' },
   { key: 'avg_shots_on_target', label: 'Avg Shots on Target' },
   { key: 'avg_pass_pct', label: 'Avg Pass Accuracy %' },
+  { key: 'avg_corners', label: 'Avg Corners' },
+  { key: 'avg_fouls', label: 'Avg Fouls' },
+  { key: 'avg_yellows', label: 'Avg Yellow Cards' },
+  { key: 'avg_saves', label: 'Avg Saves' },
+  { key: 'avg_tackles', label: 'Avg Tackles' },
+  { key: 'avg_interceptions', label: 'Avg Interceptions' },
 ]
 
 const TEAM_COLORS = [
@@ -73,6 +80,7 @@ export default function StatsComparisonPage() {
   }
 
   const hasEnoughData = validHistory.length > 1
+  const useScroll = chartData.length > 14
 
   return (
     <div
@@ -148,27 +156,39 @@ export default function StatsComparisonPage() {
                   <p className="text-gray-500 text-sm">Select teams below to see their {METRICS.find(m=>m.key===metric)?.label} over time</p>
                 </div>
               ) : (
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                    <XAxis dataKey="date" stroke="rgba(255,255,255,0.5)" fontSize={11} />
-                    <YAxis stroke="rgba(255,255,255,0.5)" fontSize={11} />
-                    <Tooltip
-                      contentStyle={{ background: '#111', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8 }}
-                    />
-                    <Legend wrapperStyle={{ fontSize: 11 }} />
-                    {selectedTeams.map((team, i) => (
-                      <Line
-                        key={team}
-                        type="monotone"
-                        dataKey={team}
-                        stroke={TEAM_COLORS[i % TEAM_COLORS.length]}
-                        strokeWidth={2}
-                        dot={{ r: 3 }}
-                      />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
+                <div style={{ overflowX: useScroll ? 'auto' : 'visible', overflowY: 'hidden' }}>
+                  <div style={{ minWidth: useScroll ? `${chartData.length * 70}px` : '100%', height: 400 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                        <XAxis
+                          dataKey="date"
+                          type="category"
+                          allowDuplicatedCategory={false}
+                          stroke="rgba(255,255,255,0.5)"
+                          fontSize={11}
+                        />
+                        <YAxis stroke="rgba(255,255,255,0.5)" fontSize={11} />
+                        <Tooltip
+                          contentStyle={{ background: '#111', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8 }}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 11 }} />
+                        {selectedTeams.map((team, i) => (
+                          <Line
+                            key={team}
+                            type="monotone"
+                            dataKey={team}
+                            stroke={TEAM_COLORS[i % TEAM_COLORS.length]}
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            connectNulls={true}
+                            isAnimationActive={false}
+                          />
+                        ))}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
               )}
             </div>
 

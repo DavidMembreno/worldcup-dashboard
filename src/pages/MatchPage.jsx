@@ -131,11 +131,12 @@ export default function MatchPage() {
   const comp = match.header?.competitions?.[0]
   const home = comp?.competitors?.find(c => c.homeAway === 'home')
   const away = comp?.competitors?.find(c => c.homeAway === 'away')
+  const statusName = comp?.status?.type?.name || ''
   const status = comp?.status?.type?.shortDetail || ''
   const isFinished = comp?.status?.type?.completed
+  const wentToPens = statusName === 'STATUS_FINAL_PEN'
   const homeScore = parseInt(home?.score || 0)
   const awayScore = parseInt(away?.score || 0)
-  const isDraw = isFinished && homeScore === awayScore
 
   const homeStats = match.homeStats || {}
   const awayStats = match.awayStats || {}
@@ -171,9 +172,14 @@ export default function MatchPage() {
                 onError={e => e.target.style.display='none'} />
               <p className="text-xs text-gray-300">{match.homeTeam}</p>
             </div>
-            <div className="text-5xl md:text-6xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
-              {home?.score ?? '-'} - {away?.score ?? '-'}
-            </div>
+            <div className="text-center">
+  <div className="text-5xl md:text-6xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+    {home?.score ?? '-'} - {away?.score ?? '-'}
+  </div>
+  {wentToPens && (
+    <p className="text-yellow-400 text-xs mt-1 tracking-wide uppercase">Decided on Penalties</p>
+  )}
+</div>
             <div className="text-center">
               <img src={match.awayLogo} className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover mx-auto mb-2"
                 onError={e => e.target.style.display='none'} />
@@ -182,17 +188,6 @@ export default function MatchPage() {
           </div>
           <p className="text-gray-400 text-sm">{comp?.venue?.fullName}</p>
         </div>
-
-        {/* water break callout */}
-        {isDraw && (
-          <div className="max-w-3xl mx-auto mb-6 rounded-xl p-4 border border-blue-400/30 bg-blue-900/20">
-            <p className="text-blue-300 text-sm text-center">
-              <span className="text-lg mr-2">💧</span>
-              <strong>Water Break Effect?</strong> This match ended in a draw.
-              This tournament has an unusually high draw rate — possibly linked to water break interruptions disrupting match flow.
-            </p>
-          </div>
-        )}
 
         {/* prediction panel for upcoming matches */}
         {!isFinished && prediction && (

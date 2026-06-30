@@ -196,25 +196,33 @@ export default function StatsComparisonPage() {
               <p className="text-gray-400 text-xs mb-3">Toggle teams to compare ({selectedTeams.length} selected)</p>
               <div className="flex flex-wrap gap-2">
                 {allTeams.map(team => {
-                  const isSelected = selectedTeams.includes(team)
-                  return (
-                    <button
-                      key={team}
-                      onClick={() => toggleTeam(team)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition ${
-                        isSelected
-                          ? 'border-white/50 text-white bg-white/15'
-                          : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-gray-300'
-                      }`}
-                    >
-                      {teamFlags[team] && (
-                        <img src={teamFlags[team]} className="w-4 h-4 rounded-full object-cover"
-                          onError={e => e.target.style.display='none'} />
-                      )}
-                      {team}
-                    </button>
-                  )
-                })}
+  const isSelected = selectedTeams.includes(team)
+  const isEliminated = (state.predictions?.eliminated_teams || []).includes(team)
+  return (
+    <button
+      key={team}
+      onClick={() => toggleTeam(team)}
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition ${
+        isSelected
+          ? 'border-white/50 text-white bg-white/15'
+          : isEliminated
+            ? 'border-white/5 text-gray-600 opacity-50 hover:opacity-70'
+            : 'border-white/10 text-gray-500 hover:border-white/30 hover:text-gray-300'
+      }`}
+      title={isEliminated ? `${team} — Eliminated` : team}
+    >
+      {teamFlags[team] && (
+        <img
+          src={teamFlags[team]}
+          className={`w-4 h-4 rounded-full object-cover ${isEliminated ? 'opacity-50 grayscale' : ''}`}
+          onError={e => e.target.style.display='none'}
+        />
+      )}
+      {team}
+      {isEliminated && <span className="text-red-400 ml-0.5" style={{ fontSize: 8 }}>✕</span>}
+    </button>
+  )
+})}
               </div>
             </div>
           </>

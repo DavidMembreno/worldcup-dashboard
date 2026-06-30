@@ -376,12 +376,13 @@ for t, p in sorted(mc_probs.items(), key=lambda x: -x[1])[:5]:
 print('\nBuilding ensemble...')
 
 finished_count = len(finished)
-if finished_count < 24:
+if not groups_done:
     W = {'elo': 0.25, 'xgb': 0.25, 'form': 0.50}
-elif finished_count < 48:
-    W = {'elo': 0.20, 'xgb': 0.30, 'form': 0.50}
 else:
-    W = {'elo': 0.15, 'xgb': 0.35, 'form': 0.50}
+    # knockout stage: actual WC26 performance dominates, Elo is a minor input,
+    # XGBoost's possession-heavy stats matter less since playing styles
+    # (e.g. counter-attacking teams like Japan) can win while "losing" the underlying numbers
+    W = {'elo': 0.25, 'xgb':0.25, 'form': 0.50}
 
 print(f'  Finished matches: {finished_count} → weights: {W}')
 

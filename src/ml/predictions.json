@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-29T17:16:41.207930",
+  "generated_at": "2026-06-29T18:03:54.567867",
   "model_version": "day_75",
   "matches_used": 75,
   "weights": {
-    "elo": 0.15,
-    "xgb": 0.35,
+    "elo": 0.25,
+    "xgb": 0.25,
     "form": 0.5
   },
   "active_teams": [
@@ -61,49 +61,49 @@
   ],
   "groups_complete": true,
   "tournament_winner": {
-    "team": "Norway",
-    "probability": 0.084
+    "team": "France",
+    "probability": 0.0615
   },
   "finalist_probabilities": [
     {
-      "team": "Norway",
-      "probability": 0.084
-    },
-    {
-      "team": "United States",
-      "probability": 0.0656
-    },
-    {
-      "team": "Morocco",
-      "probability": 0.0553
-    },
-    {
-      "team": "Switzerland",
-      "probability": 0.0523
-    },
-    {
-      "team": "Ghana",
-      "probability": 0.0512
+      "team": "France",
+      "probability": 0.0615
     },
     {
       "team": "Argentina",
-      "probability": 0.0505
-    },
-    {
-      "team": "France",
-      "probability": 0.0482
-    },
-    {
-      "team": "Colombia",
-      "probability": 0.0463
+      "probability": 0.0561
     },
     {
       "team": "Mexico",
-      "probability": 0.0446
+      "probability": 0.0528
     },
     {
-      "team": "Egypt",
-      "probability": 0.044
+      "team": "Brazil",
+      "probability": 0.0499
+    },
+    {
+      "team": "Netherlands",
+      "probability": 0.0492
+    },
+    {
+      "team": "Spain",
+      "probability": 0.0475
+    },
+    {
+      "team": "Morocco",
+      "probability": 0.0437
+    },
+    {
+      "team": "England",
+      "probability": 0.0434
+    },
+    {
+      "team": "Switzerland",
+      "probability": 0.0405
+    },
+    {
+      "team": "Norway",
+      "probability": 0.0389
     }
   ],
   "next_matches": [
@@ -112,9 +112,9 @@
       "home": "Ivory Coast",
       "away": "Norway",
       "date": "2026-06-30",
-      "home_win_prob": 0.203,
-      "draw_prob": 0.24,
-      "away_win_prob": 0.557,
+      "home_win_prob": 0.265,
+      "draw_prob": 0.307,
+      "away_win_prob": 0.428,
       "xgboost_pick": "Norway",
       "elo_pick": "Norway",
       "consensus": "Norway",
@@ -126,9 +126,9 @@
       "home": "France",
       "away": "Sweden",
       "date": "2026-06-30",
-      "home_win_prob": 0.468,
-      "draw_prob": 0.263,
-      "away_win_prob": 0.269,
+      "home_win_prob": 0.581,
+      "draw_prob": 0.253,
+      "away_win_prob": 0.166,
       "xgboost_pick": "France",
       "elo_pick": "France",
       "consensus": "France",
@@ -140,159 +140,159 @@
       "home": "Mexico",
       "away": "Ecuador",
       "date": "2026-07-01",
-      "home_win_prob": 0.536,
-      "draw_prob": 0.277,
-      "away_win_prob": 0.187,
-      "xgboost_pick": "Mexico",
+      "home_win_prob": 0.476,
+      "draw_prob": 0.342,
+      "away_win_prob": 0.183,
+      "xgboost_pick": "Draw",
       "elo_pick": "Mexico",
-      "consensus": "Mexico",
-      "confidence": "high",
-      "agreement": "2/2"
+      "consensus": "Draw",
+      "confidence": "low",
+      "agreement": "1/2"
     }
   ],
   "elo_ratings": {
-    "Mexico": 1668.0,
-    "South Africa": 1496.7,
-    "South Korea": 1626.1,
-    "Czech Republic": 1585.0,
-    "Canada": 1580.4,
+    "Mexico": 1728.0,
+    "South Africa": 1528.8,
+    "South Korea": 1566.1,
+    "Czech Republic": 1525.0,
+    "Canada": 1608.4,
     "Bosnia and Herzegovina": 1555.8,
-    "United States": 1660.2,
-    "Paraguay": 1542.4,
+    "United States": 1600.2,
+    "Paraguay": 1551.3,
     "Qatar": 1420.3,
     "Switzerland": 1648.6,
-    "Brazil": 1600.3,
+    "Brazil": 1687.9,
     "Morocco": 1761.6,
     "Haiti": 1436.0,
-    "Scotland": 1612.1,
+    "Scotland": 1552.1,
     "Australia": 1594.4,
-    "Turkey": 1525.8,
-    "Germany": 1707.7,
+    "Turkey": 1585.8,
+    "Germany": 1638.9,
     "Curacao": 1531.8,
-    "Netherlands": 1598.5,
-    "Japan": 1632.7,
+    "Netherlands": 1658.5,
+    "Japan": 1605.1,
     "Ivory Coast": 1613.8,
-    "Ecuador": 1537.6,
+    "Ecuador": 1597.6,
     "Sweden": 1547.5,
-    "Tunisia": 1524.8,
-    "Spain": 1603.9,
+    "Tunisia": 1464.8,
+    "Spain": 1663.9,
     "Cape Verde": 1554.4,
-    "Belgium": 1579.9,
+    "Belgium": 1639.9,
     "Egypt": 1617.9,
-    "Uruguay": 1580.1,
+    "Uruguay": 1520.1,
     "Saudi Arabia": 1515.2,
     "Iran": 1570.8,
-    "New Zealand": 1475.7,
-    "France": 1633.5,
-    "Senegal": 1545.0,
-    "Iraq": 1544.4,
-    "Norway": 1712.0,
-    "Argentina": 1655.3,
+    "New Zealand": 1415.7,
+    "France": 1693.5,
+    "Senegal": 1605.0,
+    "Iraq": 1484.4,
+    "Norway": 1652.0,
+    "Argentina": 1715.3,
     "Algeria": 1673.8,
     "Austria": 1618.7,
-    "Jordan": 1531.0,
+    "Jordan": 1471.0,
     "Portugal": 1640.8,
-    "DR Congo": 1545.3,
-    "England": 1606.6,
-    "Croatia": 1564.4,
-    "Ghana": 1574.5,
-    "Panama": 1562.5,
-    "Uzbekistan": 1518.3,
+    "DR Congo": 1605.3,
+    "England": 1666.6,
+    "Croatia": 1624.4,
+    "Ghana": 1514.5,
+    "Panama": 1502.5,
+    "Uzbekistan": 1458.3,
     "Colombia": 1643.0
   },
   "form_scores": {
-    "Mexico": 4.19,
-    "Canada": 3.13,
-    "Bosnia and Herzegovina": 1.96,
-    "United States": 7.21,
-    "Paraguay": 2.78,
-    "Switzerland": 4.3,
-    "Brazil": 2.49,
-    "Morocco": 5.18,
-    "Australia": 2.82,
-    "Netherlands": 4.38,
-    "Ivory Coast": 1.91,
-    "Ecuador": 0.15,
-    "Sweden": 3.4,
-    "Spain": 2.78,
-    "Cape Verde": 3.28,
-    "Belgium": 0.96,
-    "Egypt": 4.01,
-    "France": 5.03,
-    "Senegal": 0.02,
-    "Norway": 10.51,
-    "Argentina": 5.43,
-    "Algeria": 1.78,
-    "Austria": 1.96,
-    "Portugal": 4.01,
-    "DR Congo": 0.92,
-    "England": 3.71,
-    "Croatia": 0.89,
-    "Ghana": 6.32,
-    "Colombia": 4.48
+    "Mexico": 5.42,
+    "Canada": 2.76,
+    "Bosnia and Herzegovina": 1.59,
+    "United States": 3.69,
+    "Paraguay": 2.51,
+    "Switzerland": 3.49,
+    "Brazil": 5.66,
+    "Morocco": 4.2,
+    "Australia": 2.29,
+    "Netherlands": 5.94,
+    "Ivory Coast": 1.55,
+    "Ecuador": 3.59,
+    "Sweden": 2.76,
+    "Spain": 5.58,
+    "Cape Verde": 2.66,
+    "Belgium": 3.13,
+    "Egypt": 3.25,
+    "France": 7.19,
+    "Senegal": 1.63,
+    "Norway": 3.9,
+    "Argentina": 6.04,
+    "Algeria": 1.45,
+    "Austria": 1.59,
+    "Portugal": 3.25,
+    "DR Congo": 2.37,
+    "England": 4.64,
+    "Croatia": 1.99,
+    "Ghana": 2.24,
+    "Colombia": 3.64
   },
   "xgb_scores": {
-    "Mexico": 5.02,
-    "Canada": 3.04,
-    "Bosnia and Herzegovina": 2.7,
-    "United States": 6.73,
-    "Paraguay": 2.83,
-    "Switzerland": 7.16,
-    "Brazil": 2.71,
-    "Morocco": 6.32,
-    "Australia": 2.75,
-    "Netherlands": 2.03,
+    "Mexico": 5.87,
+    "Canada": 3.27,
+    "Bosnia and Herzegovina": 2.24,
+    "United States": 4.11,
+    "Paraguay": 0.99,
+    "Switzerland": 5.59,
+    "Brazil": 4.65,
+    "Morocco": 4.39,
+    "Australia": 3.66,
+    "Netherlands": 4.07,
     "Ivory Coast": 2.58,
-    "Ecuador": 0.36,
-    "Sweden": 3.5,
-    "Spain": 2.83,
-    "Cape Verde": 2.99,
-    "Belgium": 0.39,
-    "Egypt": 5.33,
-    "France": 5.01,
-    "Senegal": 1.21,
-    "Norway": 7.08,
-    "Argentina": 5.0,
-    "Algeria": 2.37,
-    "Austria": 2.58,
-    "Portugal": 2.99,
-    "DR Congo": 1.05,
-    "England": 2.66,
-    "Croatia": 1.29,
-    "Ghana": 4.27,
-    "Colombia": 5.2
+    "Ecuador": 1.04,
+    "Sweden": 2.34,
+    "Spain": 4.06,
+    "Cape Verde": 2.57,
+    "Belgium": 2.58,
+    "Egypt": 3.36,
+    "France": 6.14,
+    "Senegal": 1.75,
+    "Norway": 4.09,
+    "Argentina": 6.1,
+    "Algeria": 3.15,
+    "Austria": 2.56,
+    "Portugal": 2.29,
+    "DR Congo": 2.28,
+    "England": 4.27,
+    "Croatia": 3.72,
+    "Ghana": 1.94,
+    "Colombia": 4.32
   },
   "monte_carlo": {
     "probabilities": {
-      "Mexico": 0.0514,
-      "Canada": 0.0222,
-      "Bosnia and Herzegovina": 0.0176,
-      "United States": 0.0476,
-      "Paraguay": 0.0153,
-      "Switzerland": 0.0472,
-      "Brazil": 0.0287,
-      "Morocco": 0.1208,
-      "Australia": 0.0235,
-      "Netherlands": 0.0296,
-      "Ivory Coast": 0.0322,
-      "Ecuador": 0.0134,
-      "Sweden": 0.0149,
-      "Spain": 0.031,
-      "Cape Verde": 0.0149,
-      "Belgium": 0.0217,
-      "Egypt": 0.0298,
-      "France": 0.0388,
-      "Senegal": 0.014,
-      "Norway": 0.0739,
-      "Argentina": 0.0457,
-      "Algeria": 0.0583,
-      "Austria": 0.0358,
-      "Portugal": 0.0445,
-      "DR Congo": 0.0129,
-      "England": 0.0275,
-      "Croatia": 0.0198,
-      "Ghana": 0.0228,
-      "Colombia": 0.0442
+      "Mexico": 0.0785,
+      "Canada": 0.0241,
+      "Bosnia and Herzegovina": 0.0124,
+      "United States": 0.0192,
+      "Paraguay": 0.0128,
+      "Switzerland": 0.0349,
+      "Brazil": 0.0505,
+      "Morocco": 0.1037,
+      "Australia": 0.0205,
+      "Netherlands": 0.0439,
+      "Ivory Coast": 0.0254,
+      "Ecuador": 0.0223,
+      "Sweden": 0.0128,
+      "Spain": 0.0402,
+      "Cape Verde": 0.0116,
+      "Belgium": 0.0351,
+      "Egypt": 0.0268,
+      "France": 0.054,
+      "Senegal": 0.0237,
+      "Norway": 0.0363,
+      "Argentina": 0.0674,
+      "Algeria": 0.0475,
+      "Austria": 0.0283,
+      "Portugal": 0.0339,
+      "DR Congo": 0.0212,
+      "England": 0.0433,
+      "Croatia": 0.0268,
+      "Ghana": 0.0089,
+      "Colombia": 0.034
     },
     "likely_exit": {
       "Mexico": "R32",
@@ -329,153 +329,153 @@
     "ranked": [
       {
         "team": "Morocco",
-        "probability": 0.1208,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Norway",
-        "probability": 0.0739,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Algeria",
-        "probability": 0.0583,
+        "probability": 0.1037,
         "likely_exit": "R32"
       },
       {
         "team": "Mexico",
-        "probability": 0.0514,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "United States",
-        "probability": 0.0476,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Switzerland",
-        "probability": 0.0472,
+        "probability": 0.0785,
         "likely_exit": "R32"
       },
       {
         "team": "Argentina",
-        "probability": 0.0457,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Portugal",
-        "probability": 0.0445,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Colombia",
-        "probability": 0.0442,
+        "probability": 0.0674,
         "likely_exit": "R32"
       },
       {
         "team": "France",
-        "probability": 0.0388,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Austria",
-        "probability": 0.0358,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Ivory Coast",
-        "probability": 0.0322,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Spain",
-        "probability": 0.031,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Egypt",
-        "probability": 0.0298,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Netherlands",
-        "probability": 0.0296,
+        "probability": 0.054,
         "likely_exit": "R32"
       },
       {
         "team": "Brazil",
-        "probability": 0.0287,
+        "probability": 0.0505,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Algeria",
+        "probability": 0.0475,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Netherlands",
+        "probability": 0.0439,
         "likely_exit": "R32"
       },
       {
         "team": "England",
-        "probability": 0.0275,
+        "probability": 0.0433,
         "likely_exit": "R32"
       },
       {
-        "team": "Australia",
-        "probability": 0.0235,
+        "team": "Spain",
+        "probability": 0.0402,
         "likely_exit": "R32"
       },
       {
-        "team": "Ghana",
-        "probability": 0.0228,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Canada",
-        "probability": 0.0222,
+        "team": "Norway",
+        "probability": 0.0363,
         "likely_exit": "R32"
       },
       {
         "team": "Belgium",
-        "probability": 0.0217,
+        "probability": 0.0351,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Switzerland",
+        "probability": 0.0349,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Colombia",
+        "probability": 0.034,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Portugal",
+        "probability": 0.0339,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Austria",
+        "probability": 0.0283,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Egypt",
+        "probability": 0.0268,
         "likely_exit": "R32"
       },
       {
         "team": "Croatia",
-        "probability": 0.0198,
+        "probability": 0.0268,
         "likely_exit": "R32"
       },
       {
-        "team": "Bosnia and Herzegovina",
-        "probability": 0.0176,
+        "team": "Ivory Coast",
+        "probability": 0.0254,
         "likely_exit": "R32"
       },
       {
-        "team": "Paraguay",
-        "probability": 0.0153,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Sweden",
-        "probability": 0.0149,
-        "likely_exit": "R32"
-      },
-      {
-        "team": "Cape Verde",
-        "probability": 0.0149,
+        "team": "Canada",
+        "probability": 0.0241,
         "likely_exit": "R32"
       },
       {
         "team": "Senegal",
-        "probability": 0.014,
+        "probability": 0.0237,
         "likely_exit": "R32"
       },
       {
         "team": "Ecuador",
-        "probability": 0.0134,
+        "probability": 0.0223,
         "likely_exit": "R32"
       },
       {
         "team": "DR Congo",
-        "probability": 0.0129,
+        "probability": 0.0212,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Australia",
+        "probability": 0.0205,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "United States",
+        "probability": 0.0192,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Paraguay",
+        "probability": 0.0128,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Sweden",
+        "probability": 0.0128,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Bosnia and Herzegovina",
+        "probability": 0.0124,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Cape Verde",
+        "probability": 0.0116,
+        "likely_exit": "R32"
+      },
+      {
+        "team": "Ghana",
+        "probability": 0.0089,
         "likely_exit": "R32"
       }
     ],
     "winner": {
       "team": "Morocco",
-      "probability": 0.1208,
+      "probability": 0.1037,
       "likely_exit": "R32"
     }
   }

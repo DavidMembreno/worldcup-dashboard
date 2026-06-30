@@ -9,6 +9,7 @@ from collections import Counter
 from xgboost import XGBClassifier
 
 BASE     = os.path.dirname(__file__)
+SHARPNESS = 4# higher = more separation between strong/weak teams in probability normalization
 HIST     = os.path.join(BASE, 'historical_results.csv')
 STATS    = os.path.join(BASE, '..', 'src', 'ml', 'match_stats.json')
 OUT      = os.path.join(BASE, '..', 'src', 'ml', 'predictions.json')
@@ -387,8 +388,9 @@ else:
 print(f'  Finished matches: {finished_count} → weights: {W}')
 
 elo_raw = {t: expected(elo.get(t,1500), np.mean([elo.get(x,1500) for x in ACTIVE_TEAMS])) for t in ACTIVE_TEAMS}
-elo_total = sum(elo_raw.values())
-elo_probs = {t: v/elo_total for t,v in elo_raw.items()}
+elo_sharpened = {t: v ** SHARPNESS for t,v in elo_raw.items()}
+elo_total = sum(elo_sharpened.values())
+elo_probs = {t: elo_sharpened[t]/elo_total for t in ACTIVE_TEAMS}
 
 xgb_scores = {}
 for t in ACTIVE_TEAMS:
@@ -414,8 +416,9 @@ for t in ACTIVE_TEAMS:
         probs.append(p['home'])
     xgb_scores[t] = float(np.mean(probs))
 
-xgb_total = sum(xgb_scores.values())
-xgb_probs = {t: v/xgb_total for t,v in xgb_scores.items()}
+xgb_sharpened = {t: max(v, 0.01) ** SHARPNESS for t,v in xgb_scores.items()}
+xgb_total = sum(xgb_sharpened.values())
+xgb_probs = {t: xgb_sharpened[t]/xgb_total for t in ACTIVE_TEAMS}
 
 form_scores = {}
 for t in ACTIVE_TEAMS:
@@ -435,15 +438,16 @@ for t in ACTIVE_TEAMS:
             pts += (3 if ag>hg else 1 if ag==hg else 0) * w
     form_scores[t] = 1.0 if played==0 else (pts/played) + 0.3*((gf-ga)/played) + 0.1
 
-form_total = sum(max(v,0.01) for v in form_scores.values())
-form_probs = {t: max(form_scores[t],0.01)/form_total for t in ACTIVE_TEAMS}
+form_sharpened = {t: max(form_scores[t], 0.01) ** SHARPNESS for t in ACTIVE_TEAMS}
+form_total = sum(form_sharpened.values())
+form_probs = {t: form_sharpened[t]/form_total for t in ACTIVE_TEAMS}
 
 ensemble = {t: W['elo']*elo_probs[t] + W['xgb']*xgb_probs[t] + W['form']*form_probs[t] for t in ACTIVE_TEAMS}
 total = sum(ensemble.values())
 ensemble = {t: v/total for t,v in ensemble.items()}
 
-print('\nTop 5 ensemble (active teams only):')
-for t,p in sorted(ensemble.items(), key=lambda x:-x[1])[:5]:
+print('\nFull ensemble ranking (all active teams):')
+for t,p in sorted(ensemble.items(), key=lambda x:-x[1]):
     print(f'  {t}: elo={elo_probs[t]*100:.1f}% | xgb={xgb_probs[t]*100:.1f}% | form={form_probs[t]*100:.1f}% | ensemble={p*100:.1f}%')
 
 def build_team_snapshot(t):

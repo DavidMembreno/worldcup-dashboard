@@ -73,24 +73,27 @@ function MatchSlot({ match, liveData, onClick, size = 'sm' }) {
     >
       {/* home row */}
       <div
-        className="px-2 py-1.5 border-b flex items-center justify-between"
+        className="px-2 py-1.5 border-b flex items-center justify-between gap-1"
         style={{
           borderColor: 'rgba(255,255,255,0.08)',
           background: homeWin ? 'rgba(10,138,58,0.25)' : 'transparent',
         }}
       >
-        <span
-          className="truncate"
-          style={{
+        <div className="flex items-center gap-1 min-w-0">
+          {live?.homeLogo && (
+            <img src={live.homeLogo} className="w-4 h-4 rounded-full object-cover flex-shrink-0"
+              onError={e => e.target.style.display='none'} />
+          )}
+          <span className="truncate" style={{
             fontSize: 10,
             color: homeName === 'TBD' ? '#6b7280' : homeWin ? '#7ED957' : awayWin ? '#9ca3af' : 'white',
             fontWeight: homeWin ? 'bold' : 'normal',
-          }}
-        >
-          {homeName}
-        </span>
+          }}>
+            {homeName}
+          </span>
+        </div>
         {finished && (
-          <span style={{ fontSize: 11, fontWeight: 'bold', color: homeWin ? '#7ED957' : '#9ca3af', marginLeft: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 'bold', color: homeWin ? '#7ED957' : '#9ca3af', flexShrink: 0 }}>
             {homeScore}
           </span>
         )}
@@ -98,23 +101,24 @@ function MatchSlot({ match, liveData, onClick, size = 'sm' }) {
 
       {/* away row */}
       <div
-        className="px-2 py-1.5 flex items-center justify-between"
-        style={{
-          background: awayWin ? 'rgba(10,138,58,0.25)' : 'transparent',
-        }}
+        className="px-2 py-1.5 flex items-center justify-between gap-1"
+        style={{ background: awayWin ? 'rgba(10,138,58,0.25)' : 'transparent' }}
       >
-        <span
-          className="truncate"
-          style={{
+        <div className="flex items-center gap-1 min-w-0">
+          {live?.awayLogo && (
+            <img src={live.awayLogo} className="w-4 h-4 rounded-full object-cover flex-shrink-0"
+              onError={e => e.target.style.display='none'} />
+          )}
+          <span className="truncate" style={{
             fontSize: 10,
             color: awayName === 'TBD' ? '#6b7280' : awayWin ? '#7ED957' : homeWin ? '#9ca3af' : 'white',
             fontWeight: awayWin ? 'bold' : 'normal',
-          }}
-        >
-          {awayName}
-        </span>
+          }}>
+            {awayName}
+          </span>
+        </div>
         {finished && (
-          <span style={{ fontSize: 11, fontWeight: 'bold', color: awayWin ? '#7ED957' : '#9ca3af', marginLeft: 4 }}>
+          <span style={{ fontSize: 11, fontWeight: 'bold', color: awayWin ? '#7ED957' : '#9ca3af', flexShrink: 0 }}>
             {awayScore}
           </span>
         )}
@@ -134,58 +138,7 @@ function Column({ title, matches, onClick, size, liveData }) {
       <div className="flex flex-col flex-1 justify-around">
         {matches.map(m => (
           <div key={m.id} className="flex justify-center">
-            {/* home row */}
-<div
-  className="px-2 py-1.5 border-b flex items-center justify-between gap-1"
-  style={{
-    borderColor: 'rgba(255,255,255,0.08)',
-    background: homeWin ? 'rgba(10,138,58,0.25)' : 'transparent',
-  }}
->
-  <div className="flex items-center gap-1 min-w-0">
-    {live?.homeLogo && (
-      <img src={live.homeLogo} className="w-4 h-4 rounded-full object-cover flex-shrink-0"
-        onError={e => e.target.style.display='none'} />
-    )}
-    <span className="truncate" style={{
-      fontSize: 10,
-      color: homeName === 'TBD' ? '#6b7280' : homeWin ? '#7ED957' : awayWin ? '#9ca3af' : 'white',
-      fontWeight: homeWin ? 'bold' : 'normal',
-    }}>
-      {homeName}
-    </span>
-  </div>
-  {finished && (
-    <span style={{ fontSize: 11, fontWeight: 'bold', color: homeWin ? '#7ED957' : '#9ca3af', flexShrink: 0 }}>
-      {homeScore}
-    </span>
-  )}
-</div>
-
-{/* away row */}
-<div
-  className="px-2 py-1.5 flex items-center justify-between gap-1"
-  style={{ background: awayWin ? 'rgba(10,138,58,0.25)' : 'transparent' }}
->
-  <div className="flex items-center gap-1 min-w-0">
-    {live?.awayLogo && (
-      <img src={live.awayLogo} className="w-4 h-4 rounded-full object-cover flex-shrink-0"
-        onError={e => e.target.style.display='none'} />
-    )}
-    <span className="truncate" style={{
-      fontSize: 10,
-      color: awayName === 'TBD' ? '#6b7280' : awayWin ? '#7ED957' : homeWin ? '#9ca3af' : 'white',
-      fontWeight: awayWin ? 'bold' : 'normal',
-    }}>
-      {awayName}
-    </span>
-  </div>
-  {finished && (
-    <span style={{ fontSize: 11, fontWeight: 'bold', color: awayWin ? '#7ED957' : '#9ca3af', flexShrink: 0 }}>
-      {awayScore}
-    </span>
-  )}
-</div>
+            <MatchSlot match={m} liveData={liveData} onClick={onClick} size={size} />
           </div>
         ))}
       </div>
@@ -248,16 +201,16 @@ export default function BracketPage() {
           const home = competitors.find(c => c.homeAway === 'home')
           const away = competitors.find(c => c.homeAway === 'away')
           results[m.id] = {
-  finished,
-  home: home?.team?.displayName || m.home,
-  away: away?.team?.displayName || m.away,
-  homeLogo: home?.team?.logos?.[0]?.href || home?.team?.logo || '',
-  awayLogo: away?.team?.logos?.[0]?.href || away?.team?.logo || '',
-  homeScore: finished ? parseInt(home?.score || 0) : null,
-  awayScore: finished ? parseInt(away?.score || 0) : null,
-  homeWinner: home?.winner || false,
-  awayWinner: away?.winner || false,
-}
+            finished,
+            home: home?.team?.displayName || m.home,
+            away: away?.team?.displayName || m.away,
+            homeLogo: home?.team?.logos?.[0]?.href || home?.team?.logo || '',
+            awayLogo: away?.team?.logos?.[0]?.href || away?.team?.logo || '',
+            homeScore: finished ? parseInt(home?.score || 0) : null,
+            awayScore: finished ? parseInt(away?.score || 0) : null,
+            homeWinner: home?.winner || false,
+            awayWinner: away?.winner || false,
+          }
         } catch {}
       }))
       setLiveData(results)

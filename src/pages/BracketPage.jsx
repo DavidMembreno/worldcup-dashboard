@@ -27,18 +27,29 @@ const RIGHT_R32 = [
   { id: '760496', home: 'Portugal', away: 'Croatia' },
   { id: '760501', home: 'Colombia', away: 'Ghana' },
 ]
-const LEFT_R16  = [
-  { id: '760502', home: 'TBD', away: 'TBD' }, { id: '760503', home: 'TBD', away: 'TBD' },
-  { id: '760504', home: 'TBD', away: 'TBD' }, { id: '760505', home: 'TBD', away: 'TBD' },
+const LEFT_R16 = [
+  { id: '760502', home: 'Canada', away: 'Morocco' },
+  { id: '760503', home: 'Paraguay', away: 'France' },
+  { id: '760504', home: 'Brazil', away: 'Norway' },
+  { id: '760505', home: 'Mexico', away: 'England' },
 ]
 const RIGHT_R16 = [
-  { id: '760506', home: 'TBD', away: 'TBD' }, { id: '760507', home: 'TBD', away: 'TBD' },
-  { id: '760508', home: 'TBD', away: 'TBD' }, { id: '760509', home: 'TBD', away: 'TBD' },
+  { id: '760506', home: 'Portugal', away: 'Spain' },
+  { id: '760507', home: 'United States', away: 'Belgium' },
+  { id: '760508', home: 'Switzerland', away: 'Colombia' },
+  { id: '760509', home: 'Argentina', away: 'Egypt' },
 ]
-const LEFT_QF  = [{ id: '760510', home: 'TBD', away: 'TBD' }, { id: '760512', home: 'TBD', away: 'TBD' }]
-const RIGHT_QF = [{ id: '760511', home: 'TBD', away: 'TBD' }, { id: '760513', home: 'TBD', away: 'TBD' }]
+const LEFT_QF  = [
+  { id: '760510', home: 'France', away: 'Morocco' },
+  { id: '760512', home: 'Norway', away: 'England' },
+]
+const RIGHT_QF = [
+  { id: '760511', home: 'Spain', away: 'TBD' },
+  { id: '760513', home: 'TBD', away: 'TBD' },
+]
 const LEFT_SF  = [{ id: '760514', home: 'TBD', away: 'TBD' }]
 const RIGHT_SF = [{ id: '760515', home: 'TBD', away: 'TBD' }]
+const THIRD    = [{ id: '760516', home: 'TBD', away: 'TBD' }]
 const FINAL    = [{ id: '760517', home: 'TBD', away: 'TBD' }]
 const TOTAL_HEIGHT = 900
 
@@ -47,19 +58,23 @@ const ALL_MATCHES = [
   ...LEFT_R16, ...RIGHT_R16,
   ...LEFT_QF, ...RIGHT_QF,
   ...LEFT_SF, ...RIGHT_SF,
-  ...FINAL,
+  ...THIRD, ...FINAL,
 ]
+
+const FINISHED_STATUSES = ['STATUS_FULL_TIME', 'STATUS_FINAL_PEN', 'STATUS_FINAL_AET']
 
 function MatchSlot({ match, liveData, onClick, size = 'sm' }) {
   const w = size === 'sm' ? 135 : size === 'md' ? 145 : 160
   const live = liveData?.[match.id]
-  const finished = live?.finished
+  const finished = live ? FINISHED_STATUSES.includes(live.status) : false
   const homeScore = live?.homeScore
   const awayScore = live?.awayScore
-  const homeWin = finished && homeScore > awayScore
-  const awayWin = finished && awayScore > homeScore
+  const homeWin = finished && (live?.homeWinner || homeScore > awayScore)
+  const awayWin = finished && (live?.awayWinner || awayScore > homeScore)
   const homeName = live?.home || match.home || 'TBD'
   const awayName = live?.away || match.away || 'TBD'
+  const wentToPens = live?.status === 'STATUS_FINAL_PEN'
+  const wentToAET = live?.status === 'STATUS_FINAL_AET'
 
   return (
     <div
@@ -123,6 +138,15 @@ function MatchSlot({ match, liveData, onClick, size = 'sm' }) {
           </span>
         )}
       </div>
+
+      {/* pens/aet indicator */}
+      {(wentToPens || wentToAET) && (
+        <div className="px-2 py-0.5 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+          <span style={{ fontSize: 8, color: '#f59e0b', letterSpacing: '0.05em' }}>
+            {wentToPens ? 'PENS' : 'AET'}
+          </span>
+        </div>
+      )}
     </div>
   )
 }
@@ -196,11 +220,12 @@ export default function BracketPage() {
           const comp = data?.header?.competitions?.[0]
           if (!comp) return
           const status = comp?.status?.type?.name
-          const finished = status === 'STATUS_FULL_TIME' || status === 'STATUS_FINAL_PEN'
+          const finished = FINISHED_STATUSES.includes(status)
           const competitors = comp?.competitors || []
           const home = competitors.find(c => c.homeAway === 'home')
           const away = competitors.find(c => c.homeAway === 'away')
           results[m.id] = {
+            status,
             finished,
             home: home?.team?.displayName || m.home,
             away: away?.team?.displayName || m.away,
@@ -339,6 +364,11 @@ export default function BracketPage() {
                   <MatchSlot match={FINAL[0]} liveData={liveData} onClick={goMatch} size="lg" />
                   <img src="/trophy.png" className="w-32 h-auto opacity-90" alt="Trophy" />
                   <p className="text-gray-400 text-xs text-center">Jul 19 · MetLife Stadium</p>
+                  <div className="mt-2 text-center">
+                    <p className="text-gray-500 text-xs mb-1" style={{ fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.05em' }}>3rd Place</p>
+                    <MatchSlot match={THIRD[0]} liveData={liveData} onClick={goMatch} size="md" />
+                    <p className="text-gray-600 text-xs mt-1">Jul 18 · Hard Rock Stadium</p>
+                  </div>
                 </div>
 
                 <Column title="SF"  matches={RIGHT_SF}  onClick={goMatch} size="md" liveData={liveData} />

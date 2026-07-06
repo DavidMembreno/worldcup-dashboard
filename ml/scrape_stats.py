@@ -88,6 +88,7 @@ ESPN_EVENTS = {
     '760482': {'home': 'Uzbekistan', 'away': 'Congo DR', 'date': '2026-06-27'},
     '760484': {'home': 'Austria', 'away': 'Algeria', 'date': '2026-06-28'},
     '760483': {'home': 'Argentina', 'away': 'Jordan', 'date': '2026-06-28'},
+    # Round of 32
     '760486': {'home': 'South Africa', 'away': 'Canada', 'date': '2026-06-28'},
     '760487': {'home': 'Brazil', 'away': 'Japan', 'date': '2026-06-29'},
     '760488': {'home': 'Netherlands', 'away': 'Morocco', 'date': '2026-06-30'},
@@ -104,20 +105,26 @@ ESPN_EVENTS = {
     '760499': {'home': 'Australia', 'away': 'Egypt', 'date': '2026-07-03'},
     '760500': {'home': 'Argentina', 'away': 'Cape Verde', 'date': '2026-07-03'},
     '760501': {'home': 'Colombia', 'away': 'Ghana', 'date': '2026-07-04'},
-    '760502': {'home': 'R32 1 Winner', 'away': 'R32 3 Winner', 'date': '2026-07-04'},
-    '760503': {'home': 'R32 2 Winner', 'away': 'R32 5 Winner', 'date': '2026-07-04'},
-    '760504': {'home': 'R32 4 Winner', 'away': 'R32 6 Winner', 'date': '2026-07-05'},
-    '760505': {'home': 'R32 7 Winner', 'away': 'R32 8 Winner', 'date': '2026-07-06'},
-    '760506': {'home': 'R32 11 Winner', 'away': 'R32 12 Winner', 'date': '2026-07-06'},
-    '760507': {'home': 'R32 9 Winner', 'away': 'R32 10 Winner', 'date': '2026-07-07'},
-    '760508': {'home': 'R32 13 Winner', 'away': 'R32 15 Winner', 'date': '2026-07-07'},
-    '760509': {'home': 'R32 14 Winner', 'away': 'R32 16 Winner', 'date': '2026-07-07'},
-    '760510': {'home': 'R16 1 Winner', 'away': 'R16 2 Winner', 'date': '2026-07-09'},
-    '760511': {'home': 'R16 5 Winner', 'away': 'R16 6 Winner', 'date': '2026-07-10'},
-    '760512': {'home': 'R16 3 Winner', 'away': 'R16 4 Winner', 'date': '2026-07-11'},
+    # Round of 16
+    '760502': {'home': 'Canada', 'away': 'Morocco', 'date': '2026-07-04'},
+    '760503': {'home': 'Paraguay', 'away': 'France', 'date': '2026-07-04'},
+    '760504': {'home': 'Brazil', 'away': 'Norway', 'date': '2026-07-05'},
+    '760505': {'home': 'Mexico', 'away': 'England', 'date': '2026-07-06'},
+    '760506': {'home': 'Portugal', 'away': 'Spain', 'date': '2026-07-06'},
+    '760507': {'home': 'United States', 'away': 'Belgium', 'date': '2026-07-07'},
+    '760508': {'home': 'Switzerland', 'away': 'Colombia', 'date': '2026-07-07'},
+    '760509': {'home': 'Argentina', 'away': 'Egypt', 'date': '2026-07-07'},
+    # Quarterfinals
+    '760510': {'home': 'France', 'away': 'Morocco', 'date': '2026-07-09'},
+    '760511': {'home': 'Spain', 'away': 'R16 6 Winner', 'date': '2026-07-10'},
+    '760512': {'home': 'Norway', 'away': 'England', 'date': '2026-07-11'},
     '760513': {'home': 'R16 7 Winner', 'away': 'R16 8 Winner', 'date': '2026-07-12'},
+    # Semifinals
     '760514': {'home': 'QF 1 Winner', 'away': 'QF 2 Winner', 'date': '2026-07-14'},
     '760515': {'home': 'QF 3 Winner', 'away': 'QF 4 Winner', 'date': '2026-07-15'},
+    # Third place
+    '760516': {'home': 'SF 1 Loser', 'away': 'SF 2 Loser', 'date': '2026-07-18'},
+    # Final
     '760517': {'home': 'SF 1 Winner', 'away': 'SF 2 Winner', 'date': '2026-07-19'},
 }
 
@@ -142,6 +149,8 @@ STAT_MAP = {
     'blockedShots':     ('home_shots_blocked', 'away_shots_blocked'),
 }
 
+FINISHED_STATUSES = ('STATUS_FULL_TIME', 'STATUS_FINAL_PEN', 'STATUS_FINAL_AET')
+
 def _safe_float(val):
     try:
         return float(str(val).strip())
@@ -149,9 +158,6 @@ def _safe_float(val):
         return None
 
 def fetch_match_data(espn_id, expected_home, expected_away):
-    """Fetch stats AND score from ESPN, binding values to TEAM NAME rather than
-    trusting ESPN's homeAway field, since ESPN's home/away designation has been
-    observed to be inconsistent between calls for the same match."""
     url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event={espn_id}"
     req = urllib.request.Request(url, headers=HEADERS)
     with urllib.request.urlopen(req) as r:
@@ -161,7 +167,6 @@ def fetch_match_data(espn_id, expected_home, expected_away):
     competitors = comp.get('competitors', [])
     status = comp.get('status', {}).get('type', {}).get('name', '')
 
-    # find each competitor by actual team display name, not by homeAway role
     expected_home_n = norm(expected_home)
     expected_away_n = norm(expected_away)
 
@@ -175,15 +180,12 @@ def fetch_match_data(espn_id, expected_home, expected_away):
             away_competitor = c
 
     if home_competitor is None or away_competitor is None:
-        # fallback: couldn't match by name (e.g. placeholder "Group X Winner" labels
-        # for future rounds) — use ESPN's own homeAway field as a last resort
         home_competitor = next((c for c in competitors if c.get('homeAway') == 'home'), {})
         away_competitor = next((c for c in competitors if c.get('homeAway') == 'away'), {})
 
     home_score = int(home_competitor.get('score', 0)) if home_competitor.get('score') else None
     away_score = int(away_competitor.get('score', 0)) if away_competitor.get('score') else None
 
-    # boxscore: also match by team name, not homeAway role
     teams = data.get('boxscore', {}).get('teams', [])
     home_box = None
     away_box = None
@@ -247,7 +249,7 @@ def run():
         try:
             match_data = fetch_match_data(espn_id, home, away)
 
-            if match_data.get('status') not in ('STATUS_FULL_TIME', 'STATUS_FINAL_PEN'):
+            if match_data.get('status') not in FINISHED_STATUSES:
                 print(f'    Not finished yet ({match_data.get("status")}) — skipping')
                 continue
 

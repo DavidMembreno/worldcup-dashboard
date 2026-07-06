@@ -89,7 +89,8 @@ for k, v in raw_match_stats.items():
     v['away'] = norm(v.get('away'))
     match_stats[k] = v
 
-finished = {k: v for k, v in match_stats.items() if v.get('status') in ('STATUS_FULL_TIME', 'STATUS_FINAL_PEN')}
+FINISHED_STATUSES = ('STATUS_FULL_TIME', 'STATUS_FINAL_PEN', 'STATUS_FINAL_AET')
+finished = {k: v for k, v in match_stats.items() if v.get('status') in FINISHED_STATUSES}
 
 # ── 1. DETERMINE WHO IS STILL ALIVE ──────────────────────────────────────────
 print('Determining tournament survivors...')
@@ -160,7 +161,7 @@ groups_done = num_complete >= 10
 def get_live_knockout_survivors(pool):
     alive = set(pool)
     try:
-        r32_event_ids = [str(i) for i in range(760486, 760518)]
+        r32_event_ids = [str(i) for i in range(760486, 760518)]  # covers R32 through Final incl. third place (760516)
         for espn_id in r32_event_ids:
             url = f'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event={espn_id}'
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -168,7 +169,7 @@ def get_live_knockout_survivors(pool):
                 data = json.loads(r.read().decode())
             comp = data.get('header', {}).get('competitions', [{}])[0]
             status = comp.get('status', {}).get('type', {}).get('name', '')
-            if status not in ('STATUS_FULL_TIME', 'STATUS_FINAL_PEN'):
+            if status not in ('STATUS_FULL_TIME', 'STATUS_FINAL_PEN', 'STATUS_FINAL_AET'):
                 continue
             competitors = comp.get('competitors', [])
             home = next((c for c in competitors if c.get('homeAway') == 'home'), {})

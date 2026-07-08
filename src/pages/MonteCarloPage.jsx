@@ -98,8 +98,8 @@ export default function MonteCarloPage() {
         <div className="max-w-4xl mx-auto bg-black/50 rounded-2xl border border-white/10 overflow-hidden">
           <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
             <h2 className="text-xl" style={{ fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.05em' }}>
-              All 48 Teams Ranked
-            </h2>
+  All {ranked.length} Active Teams Ranked
+</h2>
             <p className="text-gray-500 text-xs">Click any team for details</p>
           </div>
           <div className="overflow-x-auto">

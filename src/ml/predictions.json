@@ -1,24 +1,21 @@
 {
-  "generated_at": "2026-07-06T14:25:47.679478",
-  "model_version": "day_93",
-  "matches_used": 93,
+  "generated_at": "2026-07-07T17:23:10.205167",
+  "model_version": "day_96",
+  "matches_used": 96,
   "weights": {
     "elo": 0.25,
     "xgb": 0.25,
     "form": 0.5
   },
   "active_teams": [
-    "United States",
     "Switzerland",
     "Morocco",
     "Spain",
     "Belgium",
-    "Egypt",
     "France",
     "Norway",
     "Argentina",
-    "England",
-    "Colombia"
+    "England"
   ],
   "eliminated_teams": [
     "Algeria",
@@ -28,11 +25,13 @@
     "Brazil",
     "Canada",
     "Cape Verde",
+    "Colombia",
     "Croatia",
     "Curacao",
     "Czech Republic",
     "DR Congo",
     "Ecuador",
+    "Egypt",
     "Germany",
     "Ghana",
     "Haiti",
@@ -56,72 +55,50 @@
     "Sweden",
     "Tunisia",
     "Turkey",
+    "United States",
     "Uruguay",
     "Uzbekistan"
   ],
   "groups_complete": true,
   "tournament_winner": {
     "team": "Spain",
-    "probability": 0.202
+    "probability": 0.2149
   },
   "finalist_probabilities": [
     {
       "team": "Spain",
-      "probability": 0.202
+      "probability": 0.2149
     },
     {
       "team": "France",
-      "probability": 0.1743
+      "probability": 0.1911
     },
     {
       "team": "Argentina",
-      "probability": 0.1374
-    },
-    {
-      "team": "England",
-      "probability": 0.0861
-    },
-    {
-      "team": "Norway",
-      "probability": 0.0832
+      "probability": 0.1785
     },
     {
       "team": "Morocco",
-      "probability": 0.0805
+      "probability": 0.0929
     },
     {
-      "team": "Switzerland",
-      "probability": 0.0751
-    },
-    {
-      "team": "Colombia",
-      "probability": 0.065
+      "team": "England",
+      "probability": 0.0908
     },
     {
       "team": "Belgium",
-      "probability": 0.041
+      "probability": 0.0879
     },
     {
-      "team": "United States",
-      "probability": 0.0381
-    }
-  ],
-  "next_matches": [
+      "team": "Norway",
+      "probability": 0.0871
+    },
     {
-      "espn_id": "760507",
-      "home": "United States",
-      "away": "Belgium",
-      "date": "2026-07-07",
-      "home_win_prob": 0.297,
-      "draw_prob": 0.27,
-      "away_win_prob": 0.432,
-      "xgboost_pick": "Belgium",
-      "elo_pick": "Belgium",
-      "consensus": "Belgium",
-      "confidence": "high",
-      "agreement": "2/2"
+      "team": "Switzerland",
+      "probability": 0.0568
     }
   ],
+  "next_matches": [],
   "elo_ratings": {
     "Mexico": 1712.5,
     "South Africa": 1528.8,
@@ -129,10 +106,10 @@
     "Czech Republic": 1525.0,
     "Canada": 1590.2,
     "Bosnia and Herzegovina": 1529.6,
-    "United States": 1626.4,
+    "United States": 1599.9,
     "Paraguay": 1534.2,
     "Qatar": 1420.3,
-    "Switzerland": 1680.7,
+    "Switzerland": 1679.2,
     "Brazil": 1657.1,
     "Morocco": 1771.1,
     "Haiti": 1436.0,
@@ -149,8 +126,8 @@
     "Tunisia": 1464.8,
     "Spain": 1718.2,
     "Cape Verde": 1537.4,
-    "Belgium": 1666.9,
-    "Egypt": 1615.9,
+    "Belgium": 1693.4,
+    "Egypt": 1595.6,
     "Uruguay": 1520.1,
     "Saudi Arabia": 1515.2,
     "Iran": 1570.8,
@@ -159,7 +136,7 @@
     "Senegal": 1578.0,
     "Iraq": 1484.4,
     "Norway": 1709.5,
-    "Argentina": 1732.4,
+    "Argentina": 1752.7,
     "Algeria": 1641.6,
     "Austria": 1592.6,
     "Jordan": 1471.0,
@@ -170,123 +147,96 @@
     "Ghana": 1495.2,
     "Panama": 1502.5,
     "Uzbekistan": 1458.3,
-    "Colombia": 1662.4
+    "Colombia": 1664.0
   },
   "form_scores": {
-    "United States": 2.4,
-    "Switzerland": 3.32,
-    "Morocco": 4.26,
-    "Spain": 31.45,
-    "Belgium": 4.4,
-    "Egypt": 0.92,
-    "France": 23.14,
-    "Norway": 9.34,
-    "Argentina": 10.13,
-    "England": 8.64,
-    "Colombia": 1.99
+    "Switzerland": 2.7,
+    "Morocco": 4.24,
+    "Spain": 31.27,
+    "Belgium": 10.68,
+    "France": 23.01,
+    "Norway": 9.28,
+    "Argentina": 10.23,
+    "England": 8.59
   },
   "xgb_scores": {
-    "United States": 6.94,
-    "Switzerland": 16.38,
-    "Morocco": 5.54,
-    "Spain": 7.13,
-    "Belgium": 1.65,
-    "Egypt": 2.06,
-    "France": 11.42,
-    "Norway": 4.8,
-    "Argentina": 22.23,
-    "England": 5.46,
-    "Colombia": 16.39
+    "Switzerland": 10.23,
+    "Morocco": 8.4,
+    "Spain": 11.95,
+    "Belgium": 5.3,
+    "France": 17.5,
+    "Norway": 5.92,
+    "Argentina": 34.12,
+    "England": 6.57
   },
   "monte_carlo": {
     "probabilities": {
-      "United States": 0.0527,
-      "Switzerland": 0.0811,
-      "Morocco": 0.1456,
-      "Spain": 0.105,
-      "Belgium": 0.0689,
-      "Egypt": 0.0491,
-      "France": 0.1082,
-      "Norway": 0.0979,
-      "Argentina": 0.1133,
-      "England": 0.1052,
-      "Colombia": 0.073
+      "Switzerland": 0.0944,
+      "Morocco": 0.1651,
+      "Spain": 0.1196,
+      "Belgium": 0.1025,
+      "France": 0.127,
+      "Norway": 0.1179,
+      "Argentina": 0.1528,
+      "England": 0.1207
     },
     "likely_exit": {
-      "United States": "R16",
-      "Switzerland": "R16",
-      "Morocco": "R16",
-      "Spain": "R16",
-      "Belgium": "R16",
-      "Egypt": "R16",
-      "France": "R16",
-      "Norway": "R16",
-      "Argentina": "R16",
-      "England": "R16",
-      "Colombia": "R16"
+      "Switzerland": "QF",
+      "Morocco": "QF",
+      "Spain": "QF",
+      "Belgium": "QF",
+      "France": "QF",
+      "Norway": "QF",
+      "Argentina": "QF",
+      "England": "QF"
     },
     "simulations": 10000,
     "ranked": [
       {
         "team": "Morocco",
-        "probability": 0.1456,
-        "likely_exit": "R16"
+        "probability": 0.1651,
+        "likely_exit": "QF"
       },
       {
         "team": "Argentina",
-        "probability": 0.1133,
-        "likely_exit": "R16"
+        "probability": 0.1528,
+        "likely_exit": "QF"
       },
       {
         "team": "France",
-        "probability": 0.1082,
-        "likely_exit": "R16"
+        "probability": 0.127,
+        "likely_exit": "QF"
       },
       {
         "team": "England",
-        "probability": 0.1052,
-        "likely_exit": "R16"
+        "probability": 0.1207,
+        "likely_exit": "QF"
       },
       {
         "team": "Spain",
-        "probability": 0.105,
-        "likely_exit": "R16"
+        "probability": 0.1196,
+        "likely_exit": "QF"
       },
       {
         "team": "Norway",
-        "probability": 0.0979,
-        "likely_exit": "R16"
-      },
-      {
-        "team": "Switzerland",
-        "probability": 0.0811,
-        "likely_exit": "R16"
-      },
-      {
-        "team": "Colombia",
-        "probability": 0.073,
-        "likely_exit": "R16"
+        "probability": 0.1179,
+        "likely_exit": "QF"
       },
       {
         "team": "Belgium",
-        "probability": 0.0689,
-        "likely_exit": "R16"
+        "probability": 0.1025,
+        "likely_exit": "QF"
       },
       {
-        "team": "United States",
-        "probability": 0.0527,
-        "likely_exit": "R16"
-      },
-      {
-        "team": "Egypt",
-        "probability": 0.0491,
-        "likely_exit": "R16"
+        "team": "Switzerland",
+        "probability": 0.0944,
+        "likely_exit": "QF"
       }
     ],
     "winner": {
       "team": "Morocco",
-      "probability": 0.1456,
-      "likely_exit": "R16"
+      "probability": 0.1651,
+      "likely_exit": "QF"
     }
   }
 }

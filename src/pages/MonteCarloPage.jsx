@@ -79,7 +79,6 @@ export default function MonteCarloPage() {
               <p className="text-gray-300 text-xs leading-relaxed">
                 Combines current form (50%), XGBoost stats (25%), and Elo (25%).
                 Heavily weighted toward what is happening RIGHT NOW in WC26.
-                France leads because they just beat Senegal 3-1 with strong underlying stats.
               </p>
             </div>
             <div className="bg-white/5 rounded-xl p-4">

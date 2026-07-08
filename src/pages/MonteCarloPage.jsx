@@ -87,8 +87,7 @@ export default function MonteCarloPage() {
               <p className="text-gray-300 text-xs leading-relaxed">
   Simulates the full bracket 10,000 times using Elo ratings updated with every
   finished WC26 match. No possession or pass stats - just team strength based on
-  results. Morocco leads because they have the highest Elo among WC26 teams after
-  2025-26 competitive matches including this tournament.
+  results.
 </p>
             </div>
           </div>
